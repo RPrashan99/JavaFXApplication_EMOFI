@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutY="1.0" prefHeight="402.0" prefWidth="600.0">
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="586.0" spacing="10.0" style="-fx-background-color: #545AB0;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="47.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/appIcon.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label graphicTextGap="10.0" text=" Emoify Core " textFill="WHITE">
+                     <font>
+                        <Font name="Berlin Sans FB" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </HBox>
+         </top>
+         <left>
+            <VBox prefHeight="356.0" prefWidth="127.0" style="-fx-background-color: #8065CC;" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="131.0" stylesheets="@css/styling.css" text="Home" textFill="WHITE" />
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="131.0" stylesheets="@css/styling.css" text="Apps" textFill="WHITE" />
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="131.0" stylesheets="@css/styling.css" text="Settings" textFill="WHITE" />
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <VBox alignment="TOP_CENTER" prefHeight="336.0" prefWidth="453.0" style="-fx-background-color: #1E203F;" BorderPane.alignment="TOP_CENTER">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@icons/Emotion_replace.png" />
+                     </image>
+                  </ImageView>
+                  <HBox alignment="CENTER" prefHeight="45.0" prefWidth="452.0" spacing="10.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="5.0">
+                           <children>
+                              <Label alignment="CENTER" text="System" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" text="Active" textFill="#1bea41">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                        <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="WHITE" />
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                           <children>
+                              <Label alignment="CENTER" text="Emotion" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" text="Happy" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                        <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="WHITE" />
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                           <children>
+                              <Label alignment="CENTER" text="Last Response" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" text="18 mins ago" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
