@@ -1,4 +1,4 @@
-.button {
+.menuButton {
     -fx-background-color: #7059B0;
     -fx-text-fill: white;
     -fx-padding: 8px 16px;
@@ -6,16 +6,28 @@
     -fx-font-weight: bold;
 }
 
-.button:hover {
+.menuButton:hover {
     -fx-background-color: #8D81AF;
 }
 
-.button:pressed {
+.menuButton:pressed {
     -fx-background-color: #554388;
 }
 
-.button:focused {
+.menuButton:focused {
     -fx-background-color: #554388;
     -fx-border-color: #CDD1D6;
     -fx-border-width: 0px 0px 0px 3px;
+}
+
+.closeBtn {
+    -fx-background-color: #7059B0;
+}
+
+.closeBtn:hover {
+    -fx-background-color: #8D81AF;
+}
+
+.closeBtn:pressed {
+    -fx-background-color: #554388;
 }
