@@ -56,13 +56,14 @@ public class MainController implements Initializable {
 
     @FXML
     private void loadAppsWindow() {
+
         setContent("fxmls/exAppWindow.fxml");
     }
 
-//    @FXML
-//    private void loadSettingsWindow() {
-//        setContent("Settings.fxml");
-//    }
+    @FXML
+    private void loadSettingsWindow() {
+        setContent("fxmls/settingsWindow.fxml");
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
