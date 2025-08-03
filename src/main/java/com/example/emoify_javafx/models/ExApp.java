@@ -7,12 +7,16 @@ public class ExApp {
 
     SimpleStringProperty appName;
     SimpleStringProperty path;
+
+    SimpleStringProperty iconPath;
     SimpleBooleanProperty isAccessGiven;
     SimpleBooleanProperty isAvailable;
 
-    public ExApp(String appName, String path, Boolean isAccessGiven, Boolean isAvailable) {
+    public ExApp(String appName, String path, String iconPath, Boolean isAccessGiven, Boolean isAvailable) {
         this.appName = new SimpleStringProperty(appName);
         this.path = new SimpleStringProperty(path);
+        this.iconPath = new SimpleStringProperty(iconPath);
+        this.iconPath = new SimpleStringProperty();
         this.isAccessGiven = new SimpleBooleanProperty(isAccessGiven);
         this.isAvailable = new SimpleBooleanProperty(isAvailable);
     }

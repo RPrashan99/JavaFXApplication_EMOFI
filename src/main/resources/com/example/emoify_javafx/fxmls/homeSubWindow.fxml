@@ -12,14 +12,14 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.homeController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="369.0" prefWidth="473.0" style="-fx-background-color: #1E203F;">
+      <VBox alignment="TOP_CENTER" prefHeight="369.0" prefWidth="473.0" spacing="5.0" style="-fx-background-color: #1E203F;">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="emotionImage" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../icons/Emotion_replace.png" />
+                  <Image url="@../icons/emotions/neutral_gif.gif" />
                </image>
             </ImageView>
             <HBox alignment="CENTER" prefHeight="45.0" prefWidth="452.0" spacing="10.0">
@@ -41,7 +41,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </VBox>
-                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="WHITE" />
+                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="#e40fe4" />
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
                         <Label alignment="CENTER" text="Emotion" textFill="WHITE">
@@ -59,7 +59,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </VBox>
-                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="WHITE" />
+                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="#e40fe4" />
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
                         <Label alignment="CENTER" text="Last Response" textFill="WHITE">
@@ -78,7 +78,58 @@
                      </padding>
                   </VBox>
                </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
             </HBox>
+            <Line endX="300.0" startX="-100.0" stroke="#41076e" strokeWidth="2.0">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Line>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+               <children>
+                  <HBox spacing="20.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
+                     <children>
+                        <Label contentDisplay="CENTER" prefWidth="150.0" text="Last Recommendation" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text=":" textFill="WHITE" />
+                        <Label fx:id="lastRecommendation" text="Relaxing music" textFill="WHITE" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox id="detailSlot1" spacing="20.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
+                     <children>
+                        <Label prefWidth="150.0" text="Last action taken" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label text=":" textFill="WHITE" />
+                        <Label fx:id="lastActionApp" text="Youtube" textFill="WHITE" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="50.0" right="50.0" />
+               </padding>
+            </VBox>
          </children>
       </VBox>
    </children>

@@ -12,13 +12,13 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="369.0" prefWidth="473.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="369.0" prefWidth="473.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.exAppController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
          <top>
             <HBox alignment="CENTER_LEFT" prefWidth="474.0" style="-fx-background-color: #554388;" BorderPane.alignment="CENTER">
                <children>
-                  <Label prefHeight="20.0" prefWidth="215.0" text="All avaiable apps are shown here" textFill="WHITE">
+                  <Label prefHeight="20.0" text="All available apps are shown here" textFill="WHITE" HBox.hgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -48,12 +48,21 @@
                                     </ImageView>
                                  </children>
                               </HBox>
-                              <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Youtube">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </Label>
-                              <JFXToggleButton ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Youtube">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="ytAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="youtubeBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
                            </children>
                            <padding>
                               <Insets right="10.0" />
@@ -70,12 +79,83 @@
                                     </ImageView>
                                  </children>
                               </HBox>
-                              <Label prefHeight="19.0" prefWidth="90.0" text="Spotify">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </Label>
-                              <JFXToggleButton ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Spotify">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="spotifyAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="spotifyBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="68.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="37.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/Teams.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="MS Teams">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="teamsAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="teamsBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="68.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="37.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/Zoom.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Zoom">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="zoomAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="zoomBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
                            </children>
                            <padding>
                               <Insets right="10.0" />
@@ -97,12 +177,21 @@
                                     </ImageView>
                                  </children>
                               </HBox>
-                              <Label prefWidth="90.0" text="Discord">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </Label>
-                              <JFXToggleButton ellipsisString="" prefHeight="41.0" prefWidth="70.0" />
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Discord">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="discordAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="discordBtn" ellipsisString="" prefHeight="41.0" prefWidth="70.0" />
                            </children>
                            <padding>
                               <Insets right="10.0" />
@@ -114,17 +203,88 @@
                                  <children>
                                     <ImageView fitHeight="37.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../icons/default_app.png" />
+                                          <Image url="@../icons/Whatsapp.png" />
                                        </image>
                                     </ImageView>
                                  </children>
                               </HBox>
-                              <Label prefWidth="90.0" text="Default App">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </Label>
-                              <JFXToggleButton ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Whatsapp">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="whatsappAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="whatsappBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="68.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="37.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/Telegram.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Telegram">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="telegramAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="telegramBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+                           </children>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="68.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <ImageView fitHeight="37.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/Solitaire.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Solitaire">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="solitaireAvailableLabel" text="Not Available" textFill="#842424">
+                                       <font>
+                                          <Font name="Britannic Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <JFXToggleButton fx:id="solitaireBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
                            </children>
                            <padding>
                               <Insets right="10.0" />

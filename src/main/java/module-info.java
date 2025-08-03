@@ -10,6 +10,7 @@ module com.example.emoify_javafx {
     requires org.kordamp.bootstrapfx.core;
     requires java.net.http;
     requires org.json;
+    requires com.jfoenix;
 
     opens com.example.emoify_javafx to javafx.fxml;
     opens com.example.emoify_javafx.controllers to javafx.fxml;

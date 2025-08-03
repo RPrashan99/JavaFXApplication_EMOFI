@@ -1,5 +1,7 @@
 package com.example.emoify_javafx;
 
+import org.json.JSONObject;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -19,6 +21,104 @@ public class ApiClient {
 
         return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<String> getLastRecords() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/recentRecords"))
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<String> getAppDetails() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/apps"))
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<Integer> saveUserData(String userName, String password, String phoneNumber) {
+        String json = String.format("""
+        {
+            "userName": "%s",
+            "password": "%s",
+            "phoneNumber": "%s"
+        }
+    """, userName, password, phoneNumber);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/saveUserData"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply( response ->{
+                        int status = response.statusCode();
+
+                        return status;
+                    }
+                );
+    }
+
+    public static CompletableFuture<String> getRecommendations() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/recommendation"))
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<Integer> saveRecommendationState(){
+
+        String json = String.format("""
+        {
+            "showRecommendation": %b
+        }
+    """, false);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/setShowRecommendation"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply( response ->{
+                            int status = response.statusCode();
+                            return status;
+                        }
+                );
+    }
+
+    public static CompletableFuture<Integer> setSelectedApp(String app) {
+        String json = String.format("""
+        {
+            "selectedApp": "%s"
+        }
+        """, app);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/setSelectedApp"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply( response ->{
+                            int status = response.statusCode();
+
+                            return status;
+                        }
+                );
     }
 
 //    public static String sendRequest(String input) throws Exception {

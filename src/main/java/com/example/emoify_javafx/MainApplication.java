@@ -1,17 +1,107 @@
 package com.example.emoify_javafx;
 
+import com.example.emoify_javafx.controllers.expandingButtonController;
+import com.example.emoify_javafx.controllers.recommendationController;
+import com.example.emoify_javafx.controllers.registrationController;
+import com.example.emoify_javafx.models.User;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MainApplication extends Application {
     double x, y = 0;
+
+    HttpPollingService pollingServiceRecommendationShow;
     @Override
     public void start(Stage stage) throws IOException {
+        //showRegistrationWindow(stage);
+        //showRecommendationWindowWithoutPool(stage);
+        //getRecommendationState();
+        testWindows(stage);
+
+    }
+
+    private void testWindows(Stage stage) throws IOException{
+
+        String recommendation = "Relaxing music";
+        List<String> iconsPath = new ArrayList<>();
+        iconsPath.add("/com/example/emoify_javafx/icons/spotify.png");
+        iconsPath.add("/com/example/emoify_javafx/icons/youtube_resize.png");
+        iconsPath.add("/com/example/emoify_javafx/icons/Discord.png");
+
+        List<String> aNames = new ArrayList<>();
+        aNames.add("Spotify");
+        aNames.add("Youtube");
+        aNames.add("Discord");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/expandingButton.fxml"));
+        Parent root = loader.load();
+
+        expandingButtonController expandingButtonController = loader.getController();
+        expandingButtonController.buttonSetup(recommendation, iconsPath, aNames);
+
+        stage.initStyle(StageStyle.UNDECORATED);
+        Scene sc = new Scene(root, 248, 130);
+        sc.setFill(Color.TRANSPARENT);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setScene(sc);
+
+        stage.show();
+    }
+
+    private void showRegistrationWindow(Stage primaryStage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/registrationWindow.fxml"));
+        Parent root = loader.load();
+
+        registrationController regController = loader.getController();
+
+        regController.setRegistrationSuccessHandler(user -> {
+            try {
+                showMainWindow(primaryStage, user);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Configure and show registration stage
+        Stage regStage = new Stage();
+        regStage.initStyle(StageStyle.UNDECORATED);
+        Scene sc = new Scene(root, 600, 450);
+        regStage.setScene(sc);
+
+        sc.setOnMousePressed(evt -> {
+            x = evt.getSceneX();
+            y = evt.getSceneY();
+        });
+
+        sc.setOnMouseDragged(evt -> {
+            regStage.setX(evt.getScreenX()- x);
+            regStage.setY(evt.getScreenY()- y);
+        });
+
+        regStage.showAndWait();
+    }
+
+    private void showMainWindow(Stage stage, User user) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("mainWindow.fxml"));
         Scene sc = new Scene(fxmlLoader.load(), 600, 400);
         stage.initStyle(StageStyle.UNDECORATED);
@@ -31,6 +121,138 @@ public class MainApplication extends Application {
         stage.show();
     }
 
+    private void showRecommendationWindow() throws IOException {
+
+        Platform.runLater(() -> {
+            try {
+                pollingServiceRecommendationShow.cancel();
+                System.out.println("Polling canceled!");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/recommendationWindow.fxml"));
+                Parent root = loader.load();
+
+                Stage regStage = new Stage();
+                regStage.initStyle(StageStyle.UNDECORATED);
+
+//                recommendationController controller = loader.getController();
+//                controller.getRecommendations();
+
+                Scene sc = new Scene(root, 157, 134);
+                regStage.setScene(sc);
+
+                root.layout();   // Force layout pass
+
+                // Get the preferred size of the content
+                double prefWidth = root.prefWidth(-1);
+                double prefHeight = root.prefHeight(-1);
+
+                // Set window size with some padding
+                regStage.setWidth(prefWidth + 20);
+                regStage.setHeight(prefHeight + 20);
+
+                // Set minimum size to prevent window from being too small
+                regStage.setMinWidth(prefWidth * 0.8);
+                regStage.setMinHeight(prefHeight * 0.8);
+
+                regStage.show();
+            }catch (IOException e){
+                e.printStackTrace();
+                System.err.println("Failed to load recommendation window: " + e.getMessage());
+            }
+        });
+    }
+
+    private void initialRecommendationStarter() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/recommendationWindow.fxml"));
+        Parent root = loader.load();
+
+        recommendationController controller = loader.getController();
+        //controller.getRecommendations();
+    }
+
+    private void showRecommendationWindowWithoutPool(Stage regStage) throws IOException  {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/recommendationWindow.fxml"));
+        Parent root = loader.load();
+
+        regStage.initStyle(StageStyle.UNDECORATED);
+
+        Scene sc = new Scene(root, 268, 250);
+
+        sc.setFill(Color.TRANSPARENT);
+        regStage.initStyle(StageStyle.TRANSPARENT);
+        regStage.setScene(sc);
+
+        root.layout();
+
+        //fade initial
+        root.setOpacity(0);
+        root.setTranslateY(50);
+
+        ParallelTransition combinedTransition = new ParallelTransition();
+
+        // Fade transition
+        FadeTransition fadeIn = new FadeTransition(javafx.util.Duration.millis(500), root);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        // Slide transition
+        TranslateTransition slideUp = new TranslateTransition(javafx.util.Duration.millis(500), root);
+        slideUp.setFromY(50);
+        slideUp.setToY(0);
+        slideUp.setInterpolator(Interpolator.EASE_OUT);
+
+        // Combine both transitions
+        combinedTransition.getChildren().addAll(fadeIn, slideUp);
+
+        regStage.setX(Screen.getPrimary().getVisualBounds().getWidth() - 300); // pixels from left
+        regStage.setY(Screen.getPrimary().getVisualBounds().getHeight() - 250);
+        regStage.show();
+        combinedTransition.play();
+    }
+    private void getRecommendationState(){
+        pollingServiceRecommendationShow = new HttpPollingService(
+                "http://localhost:5000/api/showRecommendation",
+                Duration.ofSeconds(2)// Poll every 2 seconds
+        );
+
+        // Handle successful updates
+        pollingServiceRecommendationShow.setOnSucceeded(event -> {
+
+            boolean showRecApp = false;
+
+            JSONObject value = new JSONObject(pollingServiceRecommendationShow.getValue());
+
+            showRecApp = value.getBoolean("show");
+
+            System.out.println("Running");
+
+            if(showRecApp){
+                ApiClient.saveRecommendationState().thenAccept(response -> {
+
+                    if(response == 200){
+                        try {
+                            System.out.println("App show");
+                            showRecommendationWindow();
+                            System.out.println("App execute send success!");
+                        } catch (IOException e) {
+                            System.out.println("App execute send failed!");
+                            throw new RuntimeException(e);
+                        }
+                    }else{
+                        System.out.println("App execute send failed!");
+                    }
+                });
+            }
+
+        });
+
+        // Handle errors
+        pollingServiceRecommendationShow.setOnFailed(event -> {
+            System.err.println("Polling failed: " + event.getSource().getException());
+        });
+
+        // Start the service
+        pollingServiceRecommendationShow.start();
+    }
     public static void main(String[] args) {
         launch();
     }

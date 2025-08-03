@@ -31,3 +31,102 @@
 .closeBtn:pressed {
     -fx-background-color: #554388;
 }
+
+.detailSlot1 {
+    -fx-background-color: #464861;
+    -fx-background-radius: 5
+}
+
+.registrationLabels {
+    -fx-background-color: #7059B0;
+    -fx-text-fill: white;
+}
+
+.registrationBtn {
+    -fx-background-color: #8D81AF;
+    -fx-text-fill: white;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.registrationBtn:hover {
+    -fx-background-color: #8D81AF;
+}
+
+.registrationBtn:pressed {
+    -fx-background-color: #554388;
+}
+
+.recCloseBtn {
+    -fx-background-color: #2C2C2C;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.recCloseBtn:hover {
+    -fx-background-color: #554388;
+}
+
+.recCloseBtn:pressed {
+    -fx-background-color: #7059B0;
+}
+
+.recAnchorPane {
+    -fx-background-color: linear-gradient(
+        from 0% 0% to 100% 100%,
+        #942EB0 6%,
+        #9D1A71 91%
+    );
+}
+
+.recRecommendationBtn {
+    -fx-background-color: #9D1A71;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0;
+    -fx-font-size: 14;
+}
+
+.recRecommendationBtn:hover {
+    -fx-background-color: #9D1A71;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0;
+    -fx-font-size: 14;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 4);
+}
+
+.recRecommendationBtn:pressed {
+    -fx-background-color: #9D1A71;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0;
+    -fx-font-size: 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 2, 0, 0, 1);
+    -fx-translate-y: 2px;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.recRecommendationAppBtn {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+}
+
+.recRecommendationAppBtn: hover {
+    -fx-background-color: rgba(0,0,0,0.6);
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
