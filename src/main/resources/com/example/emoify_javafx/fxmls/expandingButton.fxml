@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="132.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.expandingButtonController">
+   <children>
+      <VBox fx:id="mainContainer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" style="-fx-background-color: #9D1A71;">
+         <children>
+            <Button fx:id="mainButton" mnemonicParsing="false" onMouseClicked="#handleMainButtonClick" prefHeight="36.0" prefWidth="248.0" styleClass="main-button" stylesheets="@../css/stylingExBtn.css" text="Recommendation 1" />
+            <HBox fx:id="hiddenButtonsContainer" alignment="CENTER" prefHeight="94.0" prefWidth="250.0" spacing="10.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: white;">
+               <children>
+                  <Button fx:id="option1" mnemonicParsing="false" onMouseClicked="#handleOption1Clicked" styleClass="sub-button" stylesheets="@../css/stylingExBtn.css">
+                     <graphic>
+                        <ImageView fx:id="option1Icon" fitHeight="37.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/default_app.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="option2" mnemonicParsing="false" onMouseClicked="#handleOption2Clicked" styleClass="sub-button" stylesheets="@../css/stylingExBtn.css">
+                     <graphic>
+                        <ImageView fx:id="option2Icon" fitHeight="37.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/default_app.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="option3" mnemonicParsing="false" onMouseClicked="#handleOption3Clicked" styleClass="sub-button" stylesheets="@../css/stylingExBtn.css">
+                     <graphic>
+                        <ImageView fx:id="option3Icon" fitHeight="37.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/default_app.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

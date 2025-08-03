@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" minHeight="229.0" minWidth="268.0" prefHeight="229.0" prefWidth="268.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.recommendationController">
+   <children>
+      <AnchorPane styleClass="recAnchorPane" stylesheets="@../css/styling.css">
+         <children>
+            <ImageView fitHeight="38.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/recRes/Polygon%201.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="51.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0">
+               <image>
+                  <Image url="@../icons/recRes/Polygon%202.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="17.0" fitWidth="27.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="50.0">
+               <image>
+                  <Image url="@../icons/recRes/Ellipse%201.png" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="268.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/Icon2.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="38.0" prefWidth="152.0" text="Emoify Suggestions" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <VBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button mnemonicParsing="false" onMouseClicked="#handleCloseBtn" prefHeight="37.0" prefWidth="35.0" style="-fx-background-radius: 0;" styleClass="recCloseBtn" stylesheets="@../css/styling.css">
+                           <graphic>
+                              <ImageView fitHeight="22.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/close.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <ImageView fitHeight="17.0" fitWidth="27.0" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../icons/recRes/Ellipse%202.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <VBox fx:id="recommendationPane" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="268.0" spacing="5.0" VBox.vgrow="ALWAYS">
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Button fx:id="rec1Btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="240.0" styleClass="recRecommendationBtn" stylesheets="@../css/styling.css" text="Recommendation 1" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="rec2Btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="240.0" styleClass="recRecommendationBtn" stylesheets="@../css/styling.css" text="Recommendation 2">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="rec3Btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="240.0" styleClass="recRecommendationBtn" stylesheets="@../css/styling.css" text="Recommendation 3">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</VBox>
