@@ -1,17 +1,28 @@
 package com.example.emoify_javafx.controllers;
 
+import com.example.emoify_javafx.models.AnimationEvent;
+import com.example.emoify_javafx.models.AnimationEventBus;
 import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
+
+import static com.example.emoify_javafx.models.AnimationEvent.EventType.FINISHED;
+import static com.example.emoify_javafx.models.AnimationEvent.EventType.STARTED;
 
 public class expandingButtonController {
 
@@ -27,6 +38,8 @@ public class expandingButtonController {
     private List<String>apps = new ArrayList<>();
     private String recommendation;
 
+    private Consumer<ActionEvent> clickHandler;
+
     @FXML
     public void initialize() {
         // Initially hide the options
@@ -39,11 +52,21 @@ public class expandingButtonController {
         expandedHeight = hiddenButtonsContainer.getHeight() + mainContainer.getSpacing();
     }
 
-    @FXML
+    public void setClickHandler(Consumer<ActionEvent> handler) {
+        this.clickHandler = handler;
+        mainButton.setOnAction(event -> {
+            handleMainButtonClick();
+            handler.accept(event);
+        });
+    }
+
     private void handleMainButtonClick() {
+        AnimationEventBus.getInstance().post(new AnimationEvent(STARTED, mainButton));
         if (isExpanded) {
+            System.out.println("Recom btn: " + mainButton.getText() + " collapsed");
             collapse();
         } else {
+            System.out.println("Recom btn: " + mainButton.getText() + " expanded");
             expand();
         }
         isExpanded = !isExpanded;
@@ -73,6 +96,11 @@ public class expandingButtonController {
         scaleButton.setToY(1.05);
 
         expandTransition.getChildren().addAll(fadeIn, slideDown, scaleButton);
+
+        expandTransition.setOnFinished(e -> {
+            AnimationEventBus.getInstance().post(new AnimationEvent(FINISHED, mainButton));
+        });
+
         expandTransition.play();
 
         // Update main button text
@@ -101,7 +129,11 @@ public class expandingButtonController {
         collapseTransition.setOnFinished(e -> {
             hiddenButtonsContainer.setVisible(false);
             hiddenButtonsContainer.setManaged(false);
+
+            AnimationEventBus.getInstance().post(new AnimationEvent(FINISHED, mainButton));
+
         });
+
         collapseTransition.play();
 
         // Update main button text
@@ -117,22 +149,34 @@ public class expandingButtonController {
 
     private void setSubButtons(List<String> icons, List<String> appNames){
 
+        String defaultImage = "/com/example/emoify_javafx/icons/default_app.png";
+
         if(!icons.isEmpty()){
 
-            Image image1 = new Image(getClass().getResourceAsStream(icons.get(0)));
-            if(!image1.isError()){
+            try{
+                Image image1 = new Image(getClass().getResourceAsStream(icons.get(0)));
+                option1Icon.setImage(image1);
+            }catch (Exception e){
+                Image image1 = new Image(getClass().getResourceAsStream(defaultImage));
                 option1Icon.setImage(image1);
             }
 
-            Image image2 = new Image(getClass().getResourceAsStream(icons.get(1)));
-            if(!image2.isError()){
+            try{
+                Image image2 = new Image(getClass().getResourceAsStream(icons.get(1)));
+                option2Icon.setImage(image2);
+            }catch (Exception e){
+                Image image2 = new Image(getClass().getResourceAsStream(defaultImage));
                 option2Icon.setImage(image2);
             }
 
-            Image image3 = new Image(getClass().getResourceAsStream(icons.get(2)));
-            if(!image3.isError()){
+            try{
+                Image image3 = new Image(getClass().getResourceAsStream(icons.get(2)));
+                option3Icon.setImage(image3);
+            }catch (Exception e){
+                Image image3 = new Image(getClass().getResourceAsStream(defaultImage));
                 option3Icon.setImage(image3);
             }
+
 
         }else{
             System.out.println("Icons set is null");
@@ -147,15 +191,26 @@ public class expandingButtonController {
     @FXML
     void handleOption1Clicked(MouseEvent event) {
         System.out.println("Pressed app: " + apps.get(0));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     void handleOption2Clicked(MouseEvent event) {
         System.out.println("Pressed app: " + apps.get(1));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     void handleOption3Clicked(MouseEvent event) {
         System.out.println("Pressed app: " + apps.get(2));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
+    void handleCloseBtn(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 }

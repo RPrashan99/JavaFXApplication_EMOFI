@@ -23,20 +23,27 @@ import org.json.JSONString;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MainApplication extends Application {
     double x, y = 0;
 
+    private boolean toolExecuted = false;
+
+    private List<String> recommendations = new ArrayList<>();
+
+    private Map<String, List<String>> recommendationsApps = new HashMap<>();
+
+    private Map<String, List<String>> recommendationsAppIcons = new HashMap<>();
+
     HttpPollingService pollingServiceRecommendationShow;
     @Override
     public void start(Stage stage) throws IOException {
+        System.out.println("Tool started");
         //showRegistrationWindow(stage);
-        //showRecommendationWindowWithoutPool(stage);
+        showRecommendationWindowWithoutPool();
         //getRecommendationState();
-        testWindows(stage);
+        //testWindows(stage);
 
     }
 
@@ -161,27 +168,58 @@ public class MainApplication extends Application {
         });
     }
 
-    private void initialRecommendationStarter() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/recommendationWindow.fxml"));
-        Parent root = loader.load();
+    private void fetchRecommendations(){
+        ApiClient.getRecommendations().thenAccept(response -> {
+            JSONArray appsArray = new JSONArray(response);
 
-        recommendationController controller = loader.getController();
-        //controller.getRecommendations();
+            for (int i = 0; i < appsArray.length(); i++) {
+                JSONObject recObject = appsArray.getJSONObject(i);
+
+                String recommendation = recObject.getString("recommendation");
+                recommendations.add(recommendation);
+
+                JSONArray appRec = recObject.getJSONArray("apps");
+
+                List<String> appNames = new ArrayList<>();
+                List<String> appIcons = new ArrayList<>();
+
+                for(int j = 0; j < appRec.length(); j++){
+                    JSONObject appObject = appRec.getJSONObject(j);
+
+                    String appName = appObject.getString("app");
+                    String path = appObject.getString("iconPath");
+
+                    appNames.add(appName);
+                    appIcons.add(path);
+                }
+
+                recommendationsApps.put(recommendation, appNames);
+                recommendationsAppIcons.put(recommendation, appIcons);
+
+            }
+            System.out.println("Recommendations obtained: " + recommendations);
+            try {
+                showRecommendationWindowWithoutPool();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
-    private void showRecommendationWindowWithoutPool(Stage regStage) throws IOException  {
+    private void showRecommendationWindowWithoutPool() throws IOException  {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/recommendationWindow.fxml"));
         Parent root = loader.load();
 
+        Stage regStage = new Stage();
         regStage.initStyle(StageStyle.UNDECORATED);
 
-        Scene sc = new Scene(root, 268, 250);
+        root.layout();
+
+        Scene sc = new Scene(root, 268, 270);
 
         sc.setFill(Color.TRANSPARENT);
         regStage.initStyle(StageStyle.TRANSPARENT);
         regStage.setScene(sc);
-
-        root.layout();
 
         //fade initial
         root.setOpacity(0);
@@ -229,14 +267,8 @@ public class MainApplication extends Application {
                 ApiClient.saveRecommendationState().thenAccept(response -> {
 
                     if(response == 200){
-                        try {
-                            System.out.println("App show");
-                            showRecommendationWindow();
-                            System.out.println("App execute send success!");
-                        } catch (IOException e) {
-                            System.out.println("App execute send failed!");
-                            throw new RuntimeException(e);
-                        }
+                        System.out.println("App show");
+                        fetchRecommendations();
                     }else{
                         System.out.println("App execute send failed!");
                     }

@@ -11,11 +11,12 @@ module com.example.emoify_javafx {
     requires java.net.http;
     requires org.json;
     requires com.jfoenix;
+    requires com.google.common;
 
     opens com.example.emoify_javafx to javafx.fxml;
     opens com.example.emoify_javafx.controllers to javafx.fxml;
     // Export your controller package to javafx.fxml
-    exports com.example.emoify_javafx.controllers to javafx.fxml;
+    exports com.example.emoify_javafx.controllers to javafx.fxml, com.google.common;
 
     // If you have other packages that need to be accessible
     exports com.example.emoify_javafx;
