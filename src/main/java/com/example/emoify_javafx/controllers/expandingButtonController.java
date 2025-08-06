@@ -1,5 +1,7 @@
 package com.example.emoify_javafx.controllers;
 
+import com.example.emoify_javafx.ApiClient;
+import com.example.emoify_javafx.callbacks.CallbackListener;
 import com.example.emoify_javafx.models.AnimationEvent;
 import com.example.emoify_javafx.models.AnimationEventBus;
 import javafx.animation.*;
@@ -18,6 +20,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -40,6 +43,8 @@ public class expandingButtonController {
 
     private Consumer<ActionEvent> clickHandler;
 
+    private CallbackListener callback;
+
     @FXML
     public void initialize() {
         // Initially hide the options
@@ -50,6 +55,10 @@ public class expandingButtonController {
         hiddenButtonsContainer.applyCss();
         hiddenButtonsContainer.layout();
         expandedHeight = hiddenButtonsContainer.getHeight() + mainContainer.getSpacing();
+    }
+
+    public void setCallback(CallbackListener callback) {
+        this.callback = callback;
     }
 
     public void setClickHandler(Consumer<ActionEvent> handler) {
@@ -150,33 +159,46 @@ public class expandingButtonController {
     private void setSubButtons(List<String> icons, List<String> appNames){
 
         String defaultImage = "/com/example/emoify_javafx/icons/default_app.png";
+        String defaultPath = "/com/example/emoify_javafx/icons/";
+
+        option3.setVisible(false);
+        option3.setManaged(false);
 
         if(!icons.isEmpty()){
-
+            option1.setText(appNames.get(0));
             try{
-                Image image1 = new Image(getClass().getResourceAsStream(icons.get(0)));
+                String app1 = appNames.get(0).toLowerCase(Locale.ROOT);
+                Image image1 = new Image(getClass().getResourceAsStream(defaultPath + app1 + ".png"));
                 option1Icon.setImage(image1);
             }catch (Exception e){
                 Image image1 = new Image(getClass().getResourceAsStream(defaultImage));
                 option1Icon.setImage(image1);
             }
 
+            option2.setText(appNames.get(1));
             try{
-                Image image2 = new Image(getClass().getResourceAsStream(icons.get(1)));
+                String app2 = appNames.get(1).toLowerCase(Locale.ROOT);
+                Image image2 = new Image(getClass().getResourceAsStream(defaultPath + app2 + ".png"));
                 option2Icon.setImage(image2);
             }catch (Exception e){
                 Image image2 = new Image(getClass().getResourceAsStream(defaultImage));
                 option2Icon.setImage(image2);
             }
 
-            try{
-                Image image3 = new Image(getClass().getResourceAsStream(icons.get(2)));
-                option3Icon.setImage(image3);
-            }catch (Exception e){
-                Image image3 = new Image(getClass().getResourceAsStream(defaultImage));
-                option3Icon.setImage(image3);
-            }
+            if(icons.size() > 2){
 
+                option3.setVisible(true);
+                option3.setManaged(true);
+                option3.setText(appNames.get(2));
+                try{
+                    String app3 = appNames.get(2).toLowerCase(Locale.ROOT);
+                    Image image3 = new Image(getClass().getResourceAsStream(defaultPath + app3 + ".png"));
+                    option3Icon.setImage(image3);
+                }catch (Exception e){
+                    Image image3 = new Image(getClass().getResourceAsStream(defaultImage));
+                    option3Icon.setImage(image3);
+                }
+            }
 
         }else{
             System.out.println("Icons set is null");
@@ -188,25 +210,56 @@ public class expandingButtonController {
         mainButton.setText(text);
     }
 
+    private void sendRecommendationOutput(String selectedApp){
+        ApiClient.saveRecommendationState(recommendation, selectedApp).thenAccept(response -> {
+            if(response == 200){
+                System.out.println("App Send");
+            }else{
+                System.out.println("App send failed!");
+            }
+        });
+    }
+
     @FXML
     void handleOption1Clicked(MouseEvent event) {
-        System.out.println("Pressed app: " + apps.get(0));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        String selectedApp = apps.get(0);
+        System.out.println("Pressed app: " + selectedApp);
+        sendRecommendationOutput(selectedApp);
+
+        if (callback != null) {
+            callback.onDataPassed(selectedApp);
+        }
+
+//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        stage.close();
     }
 
     @FXML
     void handleOption2Clicked(MouseEvent event) {
-        System.out.println("Pressed app: " + apps.get(1));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        String selectedApp = apps.get(1);
+        System.out.println("Pressed app: " + selectedApp);
+        sendRecommendationOutput(selectedApp);
+
+        if (callback != null) {
+            callback.onDataPassed(selectedApp);
+        }
+
+//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        stage.close();
     }
 
     @FXML
     void handleOption3Clicked(MouseEvent event) {
-        System.out.println("Pressed app: " + apps.get(2));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        String selectedApp = apps.get(2);
+        System.out.println("Pressed app: " + selectedApp);
+        sendRecommendationOutput(selectedApp);
+
+        if (callback != null) {
+            callback.onDataPassed(selectedApp);
+        }
+
+//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        stage.close();
     }
 
     void handleCloseBtn(MouseEvent event) {

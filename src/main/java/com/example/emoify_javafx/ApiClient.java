@@ -69,7 +69,7 @@ public class ApiClient {
 
     public static CompletableFuture<String> getRecommendations() {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/recommendation"))
+                .uri(URI.create(BASE_URL + "/getRecommendationOptionsState"))
                 .GET()
                 .build();
 
@@ -77,16 +77,18 @@ public class ApiClient {
                 .thenApply(HttpResponse::body);
     }
 
-    public static CompletableFuture<Integer> saveRecommendationState(){
+    public static CompletableFuture<Integer> saveRecommendationState(String recommendation, String recommendedApp){
 
         String json = String.format("""
         {
-            "showRecommendation": %b
+            "executed": %b,
+            "recommendation": "%s",
+            "recommendedApp": "%s"
         }
-    """, false);
+    """, true, recommendation, recommendedApp);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/setShowRecommendation"))
+                .uri(URI.create(BASE_URL + "/setExecutedState"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
@@ -108,6 +110,62 @@ public class ApiClient {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/setSelectedApp"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply( response ->{
+                            int status = response.statusCode();
+
+                            return status;
+                        }
+                );
+    }
+
+    public static CompletableFuture<Integer> setStateInit() {
+        String state = "init";
+        String json = String.format("""
+        {
+            "state": "%s"
+        }
+        """, state);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/setStateInit"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply( response ->{
+                            int status = response.statusCode();
+
+                            return status;
+                        }
+                );
+    }
+
+    public static CompletableFuture<String> getLogin() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/getLogin"))
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<Integer> openAddApp(String userName) {
+
+        String json = String.format("""
+        {
+            "user": "%s"
+        }
+        """, userName);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/addApp"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();

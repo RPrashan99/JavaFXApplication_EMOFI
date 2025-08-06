@@ -39,6 +39,8 @@ public class MainController implements Initializable {
     private exAppController exAppControllerClass;
     private homeController homeControllerClass;
 
+    private String userName = "";
+
     @FXML
     void handleCloseBtn(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -46,7 +48,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    void setContent(String fxmlPath){
+    void setContent(String fxmlPath, String userName){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             //AnchorPane newContent = FXMLLoader.load(getClass().getResource(fxmlPath));
@@ -56,6 +58,7 @@ public class MainController implements Initializable {
                 homeControllerClass = loader.getController();
             }else if(fxmlPath.equals("fxmls/exAppWindow.fxml")){
                 exAppControllerClass = loader.getController();
+                exAppControllerClass.setUserName(userName);
             }else if(fxmlPath.equals("fxmls/settingsWindow.fxml")){
 
             }
@@ -72,19 +75,19 @@ public class MainController implements Initializable {
 
     @FXML
     private void loadHomeWindow() {
-        setContent("fxmls/homeSubWindow.fxml");
+        setContent("fxmls/homeSubWindow.fxml", userName);
     }
 
     @FXML
     private void loadAppsWindow() {
 
-        setContent("fxmls/exAppWindow.fxml");
+        setContent("fxmls/exAppWindow.fxml", userName);
     }
 
     @FXML
     private void loadSettingsWindow() {
 
-        setContent("fxmls/settingsWindow.fxml");
+        setContent("fxmls/settingsWindow.fxml", userName);
     }
 
     private void initializeStream(){
@@ -117,6 +120,10 @@ public class MainController implements Initializable {
 
         homeControllerClass.updateStateLabels(status, emotion, lastRes);
         homeControllerClass.updateEmotionImage(emotion);
+    }
+
+    public void setUserName(String user){
+        userName = user;
     }
 
     @Override

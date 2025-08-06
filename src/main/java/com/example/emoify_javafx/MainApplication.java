@@ -1,8 +1,6 @@
 package com.example.emoify_javafx;
 
-import com.example.emoify_javafx.controllers.expandingButtonController;
-import com.example.emoify_javafx.controllers.recommendationController;
-import com.example.emoify_javafx.controllers.registrationController;
+import com.example.emoify_javafx.controllers.*;
 import com.example.emoify_javafx.models.User;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -19,7 +17,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -37,14 +34,30 @@ public class MainApplication extends Application {
     private Map<String, List<String>> recommendationsAppIcons = new HashMap<>();
 
     HttpPollingService pollingServiceRecommendationShow;
+
     @Override
     public void start(Stage stage) throws IOException {
         System.out.println("Tool started");
-        //showRegistrationWindow(stage);
-        showRecommendationWindowWithoutPool();
-        //getRecommendationState();
-        //testWindows(stage);
 
+        Platform.runLater(this::setStateInit);
+        //setStateInit();
+        showWidgetWindow(stage);
+        //showRecommendationWindowWithoutPool();
+        //testWindows(stage);
+        //fetchRecommendations();
+        //getRecommendationState();
+    }
+
+    private void setStateInit(){
+        ApiClient.setStateInit().thenAccept(response -> {
+
+            if(response == 200){
+                System.out.println("State init");
+                getRecommendationState();
+            }else{
+                System.out.println("State init failed");
+            }
+        });
     }
 
     private void testWindows(Stage stage) throws IOException{
@@ -52,8 +65,8 @@ public class MainApplication extends Application {
         String recommendation = "Relaxing music";
         List<String> iconsPath = new ArrayList<>();
         iconsPath.add("/com/example/emoify_javafx/icons/spotify.png");
-        iconsPath.add("/com/example/emoify_javafx/icons/youtube_resize.png");
-        iconsPath.add("/com/example/emoify_javafx/icons/Discord.png");
+        iconsPath.add("/com/example/emoify_javafx/icons/youtube.png");
+        iconsPath.add("/com/example/emoify_javafx/icons/discord.png");
 
         List<String> aNames = new ArrayList<>();
         aNames.add("Spotify");
@@ -75,6 +88,86 @@ public class MainApplication extends Application {
         stage.show();
     }
 
+    private void showWidgetWindow(Stage stage) throws IOException{
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/widgetWindow.fxml"));
+        Parent root = loader.load();
+
+        widgetController widgetController = loader.getController();
+
+        widgetController.setWidgetOpenHandler(user -> {
+            try {
+                showInitialLoadingWindow(stage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Stage regStage = new Stage();
+        regStage.initStyle(StageStyle.UNDECORATED);
+        Scene sc = new Scene(root, 190, 106);
+        sc.setFill(Color.TRANSPARENT);
+        regStage.initStyle(StageStyle.TRANSPARENT);
+        regStage.setScene(sc);
+
+        sc.setOnMousePressed(evt -> {
+            x = evt.getSceneX();
+            y = evt.getSceneY();
+        });
+
+        sc.setOnMouseDragged(evt -> {
+            regStage.setX(evt.getScreenX()- x);
+            regStage.setY(evt.getScreenY()- y);
+        });
+
+        regStage.setX(Screen.getPrimary().getVisualBounds().getWidth() - 300); // pixels from left
+        regStage.setY(Screen.getPrimary().getVisualBounds().getHeight() - 500);
+
+        regStage.showAndWait();
+    }
+
+    private void showInitialLoadingWindow(Stage stage) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/initialLoadingWindow.fxml"));
+        Parent root = loader.load();
+
+        initialLoadingController initialLoadingController = loader.getController();
+
+        initialLoadingController.setLoginOpenHandler(data -> {
+
+            if(Objects.equals(data, "Register")){
+                try {
+                    showRegistrationWindow(stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                try {
+                    showMainWindow(stage, data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Stage regStage = new Stage();
+        regStage.initStyle(StageStyle.UNDECORATED);
+        Scene sc = new Scene(root, 412, 320);
+        regStage.setScene(sc);
+
+        sc.setOnMousePressed(evt -> {
+            x = evt.getSceneX();
+            y = evt.getSceneY();
+        });
+
+        sc.setOnMouseDragged(evt -> {
+            regStage.setX(evt.getScreenX()- x);
+            regStage.setY(evt.getScreenY()- y);
+        });
+
+        regStage.show();
+
+    }
+
     private void showRegistrationWindow(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/registrationWindow.fxml"));
         Parent root = loader.load();
@@ -83,7 +176,8 @@ public class MainApplication extends Application {
 
         regController.setRegistrationSuccessHandler(user -> {
             try {
-                showMainWindow(primaryStage, user);
+                String name = "user1";
+                showMainWindow(primaryStage, name);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -105,10 +199,10 @@ public class MainApplication extends Application {
             regStage.setY(evt.getScreenY()- y);
         });
 
-        regStage.showAndWait();
+        regStage.show();
     }
 
-    private void showMainWindow(Stage stage, User user) throws IOException {
+    private void showMainWindow(Stage stage, String user) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("mainWindow.fxml"));
         Scene sc = new Scene(fxmlLoader.load(), 600, 400);
         stage.initStyle(StageStyle.UNDECORATED);
@@ -170,6 +264,8 @@ public class MainApplication extends Application {
 
     private void fetchRecommendations(){
         ApiClient.getRecommendations().thenAccept(response -> {
+            System.out.println("Recommendation getting..");
+            recommendations.clear();
             JSONArray appsArray = new JSONArray(response);
 
             for (int i = 0; i < appsArray.length(); i++) {
@@ -178,7 +274,9 @@ public class MainApplication extends Application {
                 String recommendation = recObject.getString("recommendation");
                 recommendations.add(recommendation);
 
-                JSONArray appRec = recObject.getJSONArray("apps");
+                System.out.println("Recommendation: " + recommendation);
+
+                JSONArray appRec = recObject.getJSONArray("recommendation_options");
 
                 List<String> appNames = new ArrayList<>();
                 List<String> appIcons = new ArrayList<>();
@@ -186,8 +284,8 @@ public class MainApplication extends Application {
                 for(int j = 0; j < appRec.length(); j++){
                     JSONObject appObject = appRec.getJSONObject(j);
 
-                    String appName = appObject.getString("app");
-                    String path = appObject.getString("iconPath");
+                    String appName = appObject.getString("app_name");
+                    String path = appObject.getString("app_url");
 
                     appNames.add(appName);
                     appIcons.add(path);
@@ -198,11 +296,13 @@ public class MainApplication extends Application {
 
             }
             System.out.println("Recommendations obtained: " + recommendations);
-            try {
-                showRecommendationWindowWithoutPool();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            Platform.runLater(() -> {
+                try {
+                    showRecommendationWindowWithoutPool();
+                } catch (IOException e) {
+                    e.printStackTrace(); // avoid RuntimeException inside runLater
+                }
+            });
         });
     }
 
@@ -212,6 +312,17 @@ public class MainApplication extends Application {
 
         Stage regStage = new Stage();
         regStage.initStyle(StageStyle.UNDECORATED);
+
+        recommendationController controller = loader.getController();
+        controller.setRecommendationsFromMain(recommendations, recommendationsApps, recommendationsAppIcons);
+
+        controller.setCallback(data -> {
+            System.out.println("data received: " + data);
+
+            toolExecuted = false;
+            regStage.close();
+
+        });
 
         root.layout();
 
@@ -248,7 +359,7 @@ public class MainApplication extends Application {
     }
     private void getRecommendationState(){
         pollingServiceRecommendationShow = new HttpPollingService(
-                "http://localhost:5000/api/showRecommendation",
+                "http://localhost:5000/api/getExecutedState",
                 Duration.ofSeconds(2)// Poll every 2 seconds
         );
 
@@ -257,22 +368,30 @@ public class MainApplication extends Application {
 
             boolean showRecApp = false;
 
-            JSONObject value = new JSONObject(pollingServiceRecommendationShow.getValue());
+            System.out.println("Polling running..");
 
-            showRecApp = value.getBoolean("show");
+            if(!toolExecuted){
+                if(pollingServiceRecommendationShow.getValue() != null){
 
-            System.out.println("Running");
+                    JSONObject value = new JSONObject(pollingServiceRecommendationShow.getValue());
 
-            if(showRecApp){
-                ApiClient.saveRecommendationState().thenAccept(response -> {
+                    showRecApp = value.getBoolean("show");
 
-                    if(response == 200){
-                        System.out.println("App show");
+                    if(showRecApp){
+                        toolExecuted = true;
+                        System.out.println("App executed");
                         fetchRecommendations();
-                    }else{
-                        System.out.println("App execute send failed!");
+//                ApiClient.saveRecommendationState().thenAccept(response -> {
+//
+//                    if(response == 200){
+//                        System.out.println("App show");
+//
+//                    }else{
+//                        System.out.println("App execute send failed!");
+//                    }
+//                });
                     }
-                });
+                }
             }
 
         });

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -70,6 +71,8 @@ public class exAppController implements Initializable {
 
     private Map<String, Label>appLabels;
     private Map<String, JFXToggleButton>appButtons;
+
+    private String userName = "";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -152,5 +155,20 @@ public class exAppController implements Initializable {
                 }
             }
         }
+    }
+
+    public void setUserName(String user){
+        userName = user;
+    }
+
+    @FXML
+    void handleAddApp(MouseEvent event){
+
+        ApiClient.openAddApp(userName).thenAccept(reposnse -> {
+
+            System.out.println("Response: " + reposnse.toString());
+
+        });
+
     }
 }

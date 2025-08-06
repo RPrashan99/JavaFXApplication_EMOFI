@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="registrationAnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.initialLoadingController">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="410.0">
+         <center>
+            <VBox alignment="CENTER" fillWidth="false" spacing="10.0" style="-fx-background-color: #59488B;" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER" style="-fx-background-color: #9877A8; -fx-background-radius: 20;">
+                     <children>
+                        <ImageView fx:id="appIcon" fitHeight="99.0" fitWidth="92.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icon4.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                     </padding>
+                  </HBox>
+                  <Label fx:id="loadingLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="473.0" style="-fx-background-color: #CF4C6E;" text="Emoify System loading" textFill="WHITE" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="loadingIcon" fitHeight="64.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/Loader.gif" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="ctnBtn" mnemonicParsing="false" onMouseClicked="#handleLoginBtn" prefWidth="100.0" style="-fx-background-color: #CF4C6E;" styleClass="recRecommendationAppBtn" stylesheets="@../css/styling.css" text="Login" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

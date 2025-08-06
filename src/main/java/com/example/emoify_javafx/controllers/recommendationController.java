@@ -2,9 +2,11 @@ package com.example.emoify_javafx.controllers;
 
 import com.example.emoify_javafx.ApiClient;
 import com.example.emoify_javafx.HttpPollingService;
+import com.example.emoify_javafx.callbacks.CallbackListener;
 import com.example.emoify_javafx.models.AnimationEvent;
 import com.example.emoify_javafx.models.AnimationEventBus;
 import com.example.emoify_javafx.models.ExApp;
+import com.example.emoify_javafx.models.User;
 import com.google.common.eventbus.Subscribe;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -31,6 +33,7 @@ import java.net.URL;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.example.emoify_javafx.models.AnimationEvent.EventType.FINISHED;
@@ -56,8 +59,6 @@ public class recommendationController implements Initializable {
 
     private Map<String, List<String>> recommendationsAppIcons = new HashMap<>();
 
-    private HttpPollingService pollingServiceRecommendation;
-
     //btn list expand and collapse
     private Node selectedButton;
     private List<Node> originalOrder = new ArrayList<>();
@@ -66,6 +67,7 @@ public class recommendationController implements Initializable {
     //new
     private boolean isMainAnimationPaused = false;
     private final List<Animation> activeAnimations = new ArrayList<>();
+    private CallbackListener callback;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,7 +75,27 @@ public class recommendationController implements Initializable {
         //appIcons = new ArrayList<>();
         //getRecommendationPolling();
         AnimationEventBus.getInstance().register(this);
-        fetchRecommendationsFromApi();
+        //fetchRecommendationsFromApi();
+        try {
+            setRecommendation();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setCallback(CallbackListener callback) {
+        this.callback = callback;
+    }
+
+    public void setRecommendationsFromMain(List<String> recommendationsMain, Map<String, List<String>> recommendationsAppsMain,
+                                           Map<String, List<String>> recommendationsAppIconsMain){
+        originalOrder.clear();
+        selectedButton = null;
+        isExpanded = false;
+        recommendationPane.getChildren().clear();
+        recommendations = recommendationsMain;
+        recommendationsApps = recommendationsAppsMain;
+        recommendationsAppIcons = recommendationsAppIconsMain;
     }
 
     public void setRecommendationBefore(List<String> recs, Map<String, List<String>> apps, Map<String, List<String>> icons){
@@ -152,6 +174,15 @@ public class recommendationController implements Initializable {
         expandingButtonController.buttonSetup(recommendation,
                 recommendationsAppIcons.get(recommendation),
                 recommendationsApps.get(recommendation));
+
+        expandingButtonController.setCallback(data -> {
+            System.out.println("RecommendedController received: " + data);
+
+            // Forward to MainApplication
+            if (callback != null) {
+                callback.onDataPassed(data);
+            }
+        });
 
         expandingButtonController.setClickHandler(this::handleRecommendationClick);
 

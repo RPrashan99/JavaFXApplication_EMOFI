@@ -72,7 +72,7 @@ public class homeController implements Initializable {
         emotionImagePaths.put("Surprise", "surprise_gif.gif");
     }
 
-    private void refreshStates() {
+    public void refreshStates() {
         ApiClient.getSystemStatus().thenAccept(response -> {
             JSONObject status = new JSONObject(response);
 

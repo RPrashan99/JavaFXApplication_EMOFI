@@ -1,0 +1,44 @@
+.widgetBtn {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-padding: 50;
+    -fx-background-radius: 30;
+}
+
+.widgetBtn:hover {
+    -fx-background-color: #8D81AF;
+}
+
+.widgetBtn:pressed {
+    -fx-background-color: #554388;
+}
+
+.widgetSubBtn {
+    -fx-background-color: linear-gradient(to right, #ff9966, #ff5e62); /* Gradient */
+        -fx-text-fill: white;
+        -fx-font-size: 14px;
+        -fx-font-weight: bold;
+        -fx-pref-width: 80px;
+        -fx-pref-height: 20px;
+        -fx-font-size: 14px;
+        -fx-padding: 10 20;
+        -fx-background-radius: 10;
+        -fx-border-radius: 10;
+        -fx-cursor: hand;
+        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0.3, 0, 2);
+        -fx-transition: all 0.3s ease-in-out;
+}
+
+.widgetSubBtn:hover {
+    -fx-background-color: linear-gradient(to right, #ff5e62, #ff9966);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 10, 0.3, 0, 3);
+}
+
+.widgetSubBtn:pressed {
+    -fx-background-color: linear-gradient(to right, #ff5e62, #ff9966);
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.2, 0, 1);
+}
