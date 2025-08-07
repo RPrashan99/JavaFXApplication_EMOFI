@@ -1,0 +1,73 @@
+.root {
+    -fx-background-color: #f9f9f9;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-radius: 10;
+}
+
+/* Header */
+.header {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10;
+}
+
+.title-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Labels */
+.label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #444;
+    -fx-font-weight: bold;
+}
+
+/* Inputs */
+.input-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 6 10 6 10;
+    -fx-pref-width: 200px;
+}
+
+.input-field:focused {
+    -fx-border-color: #4285f4;
+    -fx-effect: dropshadow(one-pass-box, rgba(66,133,244,0.3), 5, 0.0, 0, 1);
+}
+
+/* Buttons */
+.primary-button {
+    -fx-background-color: #4285f4;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+    -fx-font-weight: bold;
+}
+
+.primary-button:hover {
+    -fx-background-color: #3367d6;
+}
+
+.secondary-button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-padding: 8 20;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+/* Content area */
+.content-box {
+    -fx-background-color: transparent;
+}

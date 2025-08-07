@@ -37,15 +37,19 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        System.out.println("Tool started");
+        //original
+//        System.out.println("Tool started");
+//        Platform.runLater(this::setStateInit);
+//        showWidgetWindow(stage);
 
-        Platform.runLater(this::setStateInit);
         //setStateInit();
-        showWidgetWindow(stage);
         //showRecommendationWindowWithoutPool();
         //testWindows(stage);
         //fetchRecommendations();
         //getRecommendationState();
+
+        //showSearchQueryWindow("Relaxing video");
+        messagePortalWindow();
     }
 
     private void setStateInit(){
@@ -319,6 +323,9 @@ public class MainApplication extends Application {
         controller.setCallback(data -> {
             System.out.println("data received: " + data);
 
+            //handle app based additional window open
+            selectedAppHandle(data);
+
             toolExecuted = false;
             regStage.close();
 
@@ -403,6 +410,58 @@ public class MainApplication extends Application {
 
         // Start the service
         pollingServiceRecommendationShow.start();
+    }
+
+    //unfinished
+    private void selectedAppHandle(String selectedApp){
+
+        if(selectedApp != null){
+
+        }
+
+    }
+
+    private void showSearchQueryWindow(String searchQuery) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/searchView.fxml"));
+        Parent root = loader.load();
+
+        SearchController searchController = loader.getController();
+        searchController.existingSearchQuery(searchQuery);
+
+        Stage regStage = new Stage();
+        regStage.initStyle(StageStyle.UNDECORATED);
+
+        Scene sc = new Scene(root, 347, 207);
+
+        sc.setFill(Color.TRANSPARENT);
+        regStage.initStyle(StageStyle.TRANSPARENT);
+        regStage.setScene(sc);
+
+        regStage.setX(Screen.getPrimary().getVisualBounds().getWidth() - 350); // pixels from left
+        regStage.setY(Screen.getPrimary().getVisualBounds().getHeight() - 250);
+        regStage.show();
+
+    }
+
+    private void messagePortalWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/whatsappWindow.fxml"));
+        Parent root = loader.load();
+
+        messageWindowController searchController = loader.getController();
+
+        Stage regStage = new Stage();
+        regStage.initStyle(StageStyle.UNDECORATED);
+
+        Scene sc = new Scene(root, 430, 250);
+
+        sc.setFill(Color.TRANSPARENT);
+        regStage.initStyle(StageStyle.TRANSPARENT);
+        regStage.setScene(sc);
+
+        regStage.setX(Screen.getPrimary().getVisualBounds().getWidth() - 450); // pixels from left
+        regStage.setY(Screen.getPrimary().getVisualBounds().getHeight() - 280);
+        regStage.show();
+
     }
     public static void main(String[] args) {
         launch();
