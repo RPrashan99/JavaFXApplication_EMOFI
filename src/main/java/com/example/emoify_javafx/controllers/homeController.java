@@ -37,14 +37,8 @@ public class homeController implements Initializable {
 
     private Map<String, String> emotionImagePaths;
 
-//    @FXML
-//    private void initialize() {
-//        // Set initial label texts
-//
-//
-//        // Set up event handler for the button
-//        //updateButton.setOnAction(event -> updateLabels());
-//    }
+    private String previousEmotion = "";
+    private String previousSystemStatus = "";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,6 +64,8 @@ public class homeController implements Initializable {
         emotionImagePaths.put("Boring", "boring_gif.gif");
         emotionImagePaths.put("Neutral", "neutral_gif.gif");
         emotionImagePaths.put("Surprise", "surprise_gif.gif");
+        emotionImagePaths.put("Fear", "fear_gif.gif");
+        emotionImagePaths.put("Stress", "stress_gif.gif");
     }
 
     public void refreshStates() {
@@ -88,8 +84,13 @@ public class homeController implements Initializable {
     public void updateStateLabels(String status, String emoState, String lastTime) {
 
         if(!status.isEmpty() && !emoState.isEmpty() && !lastTime.isEmpty()){
-            systemStatus.setText(status);
-            emotionState.setText(emoState);
+            if(!previousSystemStatus.equals(status)){
+                systemStatus.setText(status);
+                previousSystemStatus = status;
+            }
+            if(!previousEmotion.equals(emoState)){
+                emotionState.setText(emoState);
+            }
             lastResponseTime.setText(lastTime);
         }
     }
@@ -98,16 +99,19 @@ public class homeController implements Initializable {
 
         if(!emotionImagePaths.isEmpty()){
             String imagePath = "/com/example/emoify_javafx/icons/emotions/" + emotionImagePaths.get(emotion);
-            try{
-                Platform.runLater(() -> {
-                    Image newImage = new Image(getClass().getResourceAsStream(imagePath));
+            if(!emotion.equals(previousEmotion)){
+                try{
+                    previousEmotion = emotion;
+                    Platform.runLater(() -> {
+                        Image newImage = new Image(getClass().getResourceAsStream(imagePath));
+                        emotionImage.setImage(newImage);
+                    });
+                } catch (Exception e){
+                    System.err.println("Error loading image: " + e.getMessage());
+                    String defaultPath = "/com/example/emoify_javafx/icons/emotions/neutral.png";
+                    Image newImage = new Image(getClass().getResourceAsStream(defaultPath));
                     emotionImage.setImage(newImage);
-                });
-            } catch (Exception e){
-                System.err.println("Error loading image: " + e.getMessage());
-                String defaultPath = "/com/example/emoify_javafx/icons/emotions/neutral.png";
-                Image newImage = new Image(getClass().getResourceAsStream(defaultPath));
-                emotionImage.setImage(newImage);
+                }
             }
 
 //            FadeTransition fadeOut = new FadeTransition(Duration.millis(300), myImageView);

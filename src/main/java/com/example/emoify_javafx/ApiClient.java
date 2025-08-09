@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ApiClient {
@@ -77,15 +78,16 @@ public class ApiClient {
                 .thenApply(HttpResponse::body);
     }
 
-    public static CompletableFuture<Integer> saveRecommendationState(String recommendation, String recommendedApp){
+    public static CompletableFuture<Integer> saveRecommendationState(String recommendation, String recommendedApp, String searchQuery){
 
         String json = String.format("""
         {
             "executed": %b,
             "recommendation": "%s",
-            "recommendedApp": "%s"
+            "recommendedApp": "%s",
+            "searchQuery": "%s"
         }
-    """, true, recommendation, recommendedApp);
+    """, true, recommendation, recommendedApp, searchQuery);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/setExecutedState"))
@@ -179,19 +181,58 @@ public class ApiClient {
                 );
     }
 
-//    public static String sendRequest(String input) throws Exception {
-//        String jsonInput = String.format("{\"input\": \"%s\"}", input);
-//
-//        HttpClient client = HttpClient.newHttpClient();
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create(API_URL))
-//                .header("Content-Type", "application/json")
-//                .POST(BodyPublishers.ofString(jsonInput))
-//                .build();
-//
-//        HttpResponse<String> response = client.send(
-//                request, HttpResponse.BodyHandlers.ofString());
-//
-//        return response.body();
-//    }
+    public static CompletableFuture<Integer> setSettings(Integer userID, List<String> settings, List<String> values) {
+
+        StringBuilder settingsJson = new StringBuilder("[");
+        for (int i = 0; i < settings.size(); i++) {
+            if (i > 0) {
+                settingsJson.append(",");
+            }
+            settingsJson.append(String.format(
+                    "{\"name\":\"%s\",\"value\":\"%s\"}",
+                    escapeJson(settings.get(i)),
+                    escapeJson(values.get(i))
+            ));
+        }
+        settingsJson.append("]");
+
+        // Build the complete JSON payload
+        String json = String.format(
+                "{\"userID\":\"%s\",\"settings\":%s}",
+                userID,
+                settingsJson
+        );
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/editSettings"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply( response ->{
+                            int status = response.statusCode();
+
+                            return status;
+                        }
+                );
+    }
+
+    private static String escapeJson(String input) {
+        return input.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
+    }
+
+    public static CompletableFuture<String> getAppSettings(){
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(BASE_URL + "/getSettings"))
+            .GET()
+            .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
 }

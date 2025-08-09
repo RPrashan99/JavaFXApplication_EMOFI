@@ -1,6 +1,7 @@
 package com.example.emoify_javafx;
 
 import com.example.emoify_javafx.controllers.*;
+import com.example.emoify_javafx.models.RecommendationApp;
 import com.example.emoify_javafx.models.User;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -33,14 +34,16 @@ public class MainApplication extends Application {
 
     private Map<String, List<String>> recommendationsAppIcons = new HashMap<>();
 
+    private Map<String, List<RecommendationApp>> recommendationsAppClasses = new HashMap<>();
+
     HttpPollingService pollingServiceRecommendationShow;
 
     @Override
     public void start(Stage stage) throws IOException {
         //original
 //        System.out.println("Tool started");
-//        Platform.runLater(this::setStateInit);
-//        showWidgetWindow(stage);
+        Platform.runLater(this::setStateInit);
+        showWidgetWindow(stage);
 
         //setStateInit();
         //showRecommendationWindowWithoutPool();
@@ -49,7 +52,8 @@ public class MainApplication extends Application {
         //getRecommendationState();
 
         //showSearchQueryWindow("Relaxing video");
-        messagePortalWindow();
+        //messagePortalWindow();
+        //testWindows(stage);
     }
 
     private void setStateInit(){
@@ -65,26 +69,14 @@ public class MainApplication extends Application {
     }
 
     private void testWindows(Stage stage) throws IOException{
-
-        String recommendation = "Relaxing music";
-        List<String> iconsPath = new ArrayList<>();
-        iconsPath.add("/com/example/emoify_javafx/icons/spotify.png");
-        iconsPath.add("/com/example/emoify_javafx/icons/youtube.png");
-        iconsPath.add("/com/example/emoify_javafx/icons/discord.png");
-
-        List<String> aNames = new ArrayList<>();
-        aNames.add("Spotify");
-        aNames.add("Youtube");
-        aNames.add("Discord");
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/expandingButton.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/settingsWindow.fxml"));
         Parent root = loader.load();
 
-        expandingButtonController expandingButtonController = loader.getController();
-        expandingButtonController.buttonSetup(recommendation, iconsPath, aNames);
+        settingsController settingsController = loader.getController();
+        settingsController.setInitialValues(false, "Mid", 10, 10, 10);
 
         stage.initStyle(StageStyle.UNDECORATED);
-        Scene sc = new Scene(root, 248, 130);
+        Scene sc = new Scene(root, 475, 351);
         sc.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(sc);
@@ -146,7 +138,7 @@ public class MainApplication extends Application {
                 }
             }else{
                 try {
-                    showMainWindow(stage, data);
+                    showMainWindow(data);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -155,7 +147,7 @@ public class MainApplication extends Application {
 
         Stage regStage = new Stage();
         regStage.initStyle(StageStyle.UNDECORATED);
-        Scene sc = new Scene(root, 412, 320);
+        Scene sc = new Scene(root, 411, 319);
         regStage.setScene(sc);
 
         sc.setOnMousePressed(evt -> {
@@ -181,7 +173,7 @@ public class MainApplication extends Application {
         regController.setRegistrationSuccessHandler(user -> {
             try {
                 String name = "user1";
-                showMainWindow(primaryStage, name);
+                showMainWindow(name);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -206,10 +198,12 @@ public class MainApplication extends Application {
         regStage.show();
     }
 
-    private void showMainWindow(Stage stage, String user) throws IOException {
+    private void showMainWindow(String user) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("mainWindow.fxml"));
         Scene sc = new Scene(fxmlLoader.load(), 600, 400);
-        stage.initStyle(StageStyle.UNDECORATED);
+
+        Stage mainStage = new Stage();
+        mainStage.initStyle(StageStyle.UNDECORATED);
 
         //move around
         sc.setOnMousePressed(evt -> {
@@ -218,12 +212,12 @@ public class MainApplication extends Application {
         });
 
         sc.setOnMouseDragged(evt -> {
-            stage.setX(evt.getScreenX()- x);
-            stage.setY(evt.getScreenY()- y);
+            mainStage.setX(evt.getScreenX()- x);
+            mainStage.setY(evt.getScreenY()- y);
         });
 
-        stage.setScene(sc);
-        stage.show();
+        mainStage.setScene(sc);
+        mainStage.show();
     }
 
     private void showRecommendationWindow() throws IOException {
@@ -273,6 +267,7 @@ public class MainApplication extends Application {
             JSONArray appsArray = new JSONArray(response);
 
             for (int i = 0; i < appsArray.length(); i++) {
+
                 JSONObject recObject = appsArray.getJSONObject(i);
 
                 String recommendation = recObject.getString("recommendation");
@@ -284,12 +279,19 @@ public class MainApplication extends Application {
 
                 List<String> appNames = new ArrayList<>();
                 List<String> appIcons = new ArrayList<>();
+                List<RecommendationApp> appClasses= new ArrayList<>();
 
                 for(int j = 0; j < appRec.length(); j++){
                     JSONObject appObject = appRec.getJSONObject(j);
 
                     String appName = appObject.getString("app_name");
                     String path = appObject.getString("app_url");
+                    String searchQuery = appObject.getString("search_query");
+                    Boolean isLocal = appObject.getBoolean("isLocal");
+                    System.out.println("App url: " + path);
+
+                    RecommendationApp appClass = new RecommendationApp(appName, path, searchQuery, isLocal);
+                    appClasses.add(appClass);
 
                     appNames.add(appName);
                     appIcons.add(path);
@@ -297,6 +299,7 @@ public class MainApplication extends Application {
 
                 recommendationsApps.put(recommendation, appNames);
                 recommendationsAppIcons.put(recommendation, appIcons);
+                recommendationsAppClasses.put(recommendation, appClasses);
 
             }
             System.out.println("Recommendations obtained: " + recommendations);
@@ -324,9 +327,12 @@ public class MainApplication extends Application {
             System.out.println("data received: " + data);
 
             //handle app based additional window open
-            selectedAppHandle(data);
+            boolean isSearched = selectedAppHandle(data);
 
-            toolExecuted = false;
+            if(!isSearched){
+                System.out.println("No search query");
+                sendMessageInfo(data.get(0), data.get(1), "");
+            }
             regStage.close();
 
         });
@@ -413,22 +419,63 @@ public class MainApplication extends Application {
     }
 
     //unfinished
-    private void selectedAppHandle(String selectedApp){
+    private boolean selectedAppHandle(List<String> selectedApp) {
 
-        if(selectedApp != null){
+        if(selectedApp != null && !selectedApp.isEmpty()){
 
+            String rec = selectedApp.get(0);
+            String app = selectedApp.get(1);
+
+            List<RecommendationApp> recApps = recommendationsAppClasses.get(rec);
+
+            for(int i = 0; i < recApps.size(); i++){
+
+                if(recApps.get(i).getApp_name().equals(app)){
+
+                    System.out.println("app url: " + recApps.get(i).getApp_url());
+
+                    if(recApps.get(i).getApp_url().contains("<search_query>")){
+                        String searchQuery = recApps.get(i).getSearch_query();
+                        System.out.println("Found search query");
+
+                        Platform.runLater(()->{
+                            try {
+                                showSearchQueryWindow(rec, app, searchQuery);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
+                        return true;
+
+                    }else{
+                        return false;
+                    }
+                }
+
+            }
+        }else{
+            return false;
         }
 
+        return false;
     }
 
-    private void showSearchQueryWindow(String searchQuery) throws IOException {
+    private void showSearchQueryWindow(String recommendation, String selectedApp, String searchQuery) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/searchView.fxml"));
         Parent root = loader.load();
+
+        Stage regStage = new Stage();
 
         SearchController searchController = loader.getController();
         searchController.existingSearchQuery(searchQuery);
 
-        Stage regStage = new Stage();
+        searchController.setSearchSuccessHandler(query -> {
+
+            sendMessageInfo(recommendation, selectedApp, query);
+            regStage.close();
+
+        });
         regStage.initStyle(StageStyle.UNDECORATED);
 
         Scene sc = new Scene(root, 347, 207);
@@ -462,6 +509,18 @@ public class MainApplication extends Application {
         regStage.setY(Screen.getPrimary().getVisualBounds().getHeight() - 280);
         regStage.show();
 
+    }
+
+    private void sendMessageInfo(String recommendation, String selectedApp, String searchQuery){
+
+        ApiClient.saveRecommendationState(recommendation, selectedApp, searchQuery).thenAccept(response -> {
+            if(response == 200){
+                System.out.println("Message Send");
+                toolExecuted = false;
+            }else{
+                System.out.println("Message send failed!");
+            }
+        });
     }
     public static void main(String[] args) {
         launch();

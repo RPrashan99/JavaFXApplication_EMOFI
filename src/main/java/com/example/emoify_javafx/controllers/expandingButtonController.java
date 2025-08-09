@@ -210,56 +210,52 @@ public class expandingButtonController {
         mainButton.setText(text);
     }
 
-    private void sendRecommendationOutput(String selectedApp){
-        ApiClient.saveRecommendationState(recommendation, selectedApp).thenAccept(response -> {
-            if(response == 200){
-                System.out.println("App Send");
-            }else{
-                System.out.println("App send failed!");
-            }
-        });
-    }
+//    private void sendRecommendationOutput(String selectedApp){
+//        ApiClient.saveRecommendationState(recommendation, selectedApp).thenAccept(response -> {
+//            if(response == 200){
+//                System.out.println("App Send");
+//            }else{
+//                System.out.println("App send failed!");
+//            }
+//        });
+//    }
 
     @FXML
     void handleOption1Clicked(MouseEvent event) {
         String selectedApp = apps.get(0);
         System.out.println("Pressed app: " + selectedApp);
-        sendRecommendationOutput(selectedApp);
+        //sendRecommendationOutput(selectedApp);
 
-        if (callback != null) {
-            callback.onDataPassed(selectedApp);
-        }
-
-//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        stage.close();
+        callbackHelper(selectedApp);
     }
 
     @FXML
     void handleOption2Clicked(MouseEvent event) {
         String selectedApp = apps.get(1);
         System.out.println("Pressed app: " + selectedApp);
-        sendRecommendationOutput(selectedApp);
+        //sendRecommendationOutput(selectedApp);
 
-        if (callback != null) {
-            callback.onDataPassed(selectedApp);
-        }
-
-//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        stage.close();
+        callbackHelper(selectedApp);
     }
 
     @FXML
     void handleOption3Clicked(MouseEvent event) {
         String selectedApp = apps.get(2);
         System.out.println("Pressed app: " + selectedApp);
-        sendRecommendationOutput(selectedApp);
+        //sendRecommendationOutput(selectedApp);
+
+        callbackHelper(selectedApp);
+    }
+
+    private void callbackHelper(String selectedApp){
+
+        List<String> appData = new ArrayList<>();
+        appData.add(recommendation);
+        appData.add(selectedApp);
 
         if (callback != null) {
-            callback.onDataPassed(selectedApp);
+            callback.onDataPassed(appData);
         }
-
-//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        stage.close();
     }
 
     void handleCloseBtn(MouseEvent event) {

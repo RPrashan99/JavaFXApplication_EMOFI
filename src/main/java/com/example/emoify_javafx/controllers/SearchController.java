@@ -1,5 +1,6 @@
 package com.example.emoify_javafx.controllers;
 
+import com.example.emoify_javafx.models.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class SearchController {
 
@@ -22,6 +24,11 @@ public class SearchController {
 
     @FXML
     private Label appLabel, versionLabel, authorLabel;
+    private Consumer<String> searchSuccessHandler;
+
+    public void setSearchSuccessHandler(Consumer<String> handler) {
+        this.searchSuccessHandler = handler;
+    }
 
     public void existingSearchQuery(String search){
         searchField.setText(search);
@@ -32,7 +39,11 @@ public class SearchController {
         String query = searchField.getText().trim();
         if (!query.isEmpty()) {
             System.out.println("Search Query: " + query);
-            // Add your search logic here
+
+            if (searchSuccessHandler != null) {
+                searchSuccessHandler.accept(query);
+            }
+
         }
     }
 
@@ -43,5 +54,7 @@ public class SearchController {
         stage.close();
 
     }
+
+
 }
 

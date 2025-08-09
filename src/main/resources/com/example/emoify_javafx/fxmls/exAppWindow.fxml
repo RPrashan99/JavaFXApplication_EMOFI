@@ -51,7 +51,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Youtube">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Youtube" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -82,7 +82,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Spotify">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Spotify" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -113,7 +113,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="MS Teams">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="MS Teams" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -144,7 +144,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Zoom">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Zoom" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -180,7 +180,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Discord">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Discord" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -211,7 +211,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Whatsapp">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Whatsapp" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -242,7 +242,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Telegram">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Telegram" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
@@ -273,7 +273,7 @@
                               </HBox>
                               <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                  <children>
-                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Solitaire">
+                                    <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Solitaire" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="13.0" />
                                        </font>
