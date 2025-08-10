@@ -1,5 +1,6 @@
 package com.example.emoify_javafx;
 
+import com.example.emoify_javafx.controllers.ChatController;
 import com.example.emoify_javafx.controllers.exAppController;
 import com.example.emoify_javafx.controllers.homeController;
 import com.example.emoify_javafx.controllers.settingsController;
@@ -37,11 +38,15 @@ public class MainController implements Initializable {
     @FXML
     private Button settingsButton;
 
+    @FXML
+    private Button chatButton;
+
 
     private HttpPollingService pollingService;
     private exAppController exAppControllerClass;
     private homeController homeControllerClass;
     private settingsController settingsControllerClass;
+    private ChatController chatControllerClass;
 
     private final Map<String, AnchorPane> loadedViews = new HashMap<>();
     private final Map<String, Object> controllers = new HashMap<>();
@@ -73,6 +78,8 @@ public class MainController implements Initializable {
                     ((exAppController) controller).setUserName(userName);
                 } else if (controller instanceof settingsController) {
                     //((settingsController) controller).setInitialValues(false, "Mid", 10, 10, 10);
+                } else if(controller instanceof ChatController){
+
                 }
 
             } else {
@@ -93,26 +100,13 @@ public class MainController implements Initializable {
                 } else if (controller instanceof settingsController) {
                     settingsControllerClass = (settingsController) controller;
                     //settingsControllerClass.setInitialValues(false, "Mid", 10, 10, 10);
+                } else if (controller instanceof ChatController) {
+                    chatControllerClass = (ChatController) controller;
                 }
 
                 // Cache the loaded view
                 loadedViews.put(fxmlPath, newContent);
             }
-
-
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-//            //AnchorPane newContent = FXMLLoader.load(getClass().getResource(fxmlPath));
-//            AnchorPane newContent = loader.load();
-//
-//            if(fxmlPath.equals("fxmls/homeSubWindow.fxml")){
-//                homeControllerClass = loader.getController();
-//            }else if(fxmlPath.equals("fxmls/exAppWindow.fxml")){
-//                exAppControllerClass = loader.getController();
-//                exAppControllerClass.setUserName(userName);
-//            }else if(fxmlPath.equals("fxmls/settingsWindow.fxml")){
-//                settingsControllerClass = loader.getController();
-//                settingsControllerClass.setInitialValues(false, "Mid", 10, 10, 10);
-//            }
 
             contentPane.getChildren().setAll(newContent);
             AnchorPane.setTopAnchor(newContent, 0.0);
@@ -141,6 +135,10 @@ public class MainController implements Initializable {
         setContent("fxmls/settingsWindow.fxml", userName);
     }
 
+    @FXML
+    private void loadChatWindow(){
+        setContent("fxmls/chatWindow.fxml", userName);
+    }
     private void initializeStream(){
         pollingService = new HttpPollingService(
                 "http://localhost:5000/api/stateUI",

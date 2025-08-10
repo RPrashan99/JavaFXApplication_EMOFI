@@ -2,6 +2,7 @@ package com.example.emoify_javafx.controllers;
 
 import com.example.emoify_javafx.ApiClient;
 import com.example.emoify_javafx.models.ExApp;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -130,31 +131,33 @@ public class exAppController implements Initializable {
     }
 
     private void setAppDetails(){
-        if(!exAppsList.isEmpty()){
-            for (int i = 0; i < exAppsList.size(); i++){
-                ExApp app = exAppsList.get(i);
-                String appName = app.getAppName();
-                boolean access = app.isIsAccessGiven();
-                boolean available = app.isIsAvailable();
+        Platform.runLater(()-> {
+            if(!exAppsList.isEmpty()){
+                for (int i = 0; i < exAppsList.size(); i++){
+                    ExApp app = exAppsList.get(i);
+                    String appName = app.getAppName();
+                    boolean access = app.isIsAccessGiven();
+                    boolean available = app.isIsAvailable();
 
-                JFXToggleButton btn = appButtons.get(appName);
-                if(access){
-                    btn.setSelected(true);
-                }else{
-                    btn.setSelected(false);
-                }
+                    JFXToggleButton btn = appButtons.get(appName);
+                    if(access){
+                        btn.setSelected(true);
+                    }else{
+                        btn.setSelected(false);
+                    }
 
-                Label lb = appLabels.get(appName);
-                if(available){
-                    lb.setText("Available");
-                    lb.setTextFill(Color.web("#15d929"));
-                } else {
-                    lb.setText("Not Available");
-                    lb.setTextFill(Color.web("#842424"));
-                    btn.setDisable(true);
+                    Label lb = appLabels.get(appName);
+                    if(available){
+                        lb.setText("Available");
+                        lb.setTextFill(Color.web("#15d929"));
+                    } else {
+                        lb.setText("Not Available");
+                        lb.setTextFill(Color.web("#842424"));
+                        btn.setDisable(true);
+                    }
                 }
             }
-        }
+        });
     }
 
     public void setUserName(String user){
