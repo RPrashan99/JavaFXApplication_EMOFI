@@ -33,9 +33,14 @@
             <ScrollPane fx:id="scrollAppPane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
-      <AnchorPane AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="310.0">
+      <AnchorPane layoutY="311.2" prefHeight="34.0" prefWidth="152.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="311.0">
          <children>
-            <Button fx:id="addBtn" mnemonicParsing="false" onMouseClicked="#handleAddApp" styleClass="registrationBtn" stylesheets="@../css/styling.css" text="Add app">
+            <Button fx:id="addBtn" mnemonicParsing="false" onMouseClicked="#handleAddApp" styleClass="registrationBtn" stylesheets="@../css/styling.css" text="Add app" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="applyBtn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#handleApplyBtn" styleClass="registrationBtn" stylesheets="@../css/styling.css" text="Apply" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

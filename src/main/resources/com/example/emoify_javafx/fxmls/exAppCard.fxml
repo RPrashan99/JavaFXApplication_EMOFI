@@ -9,20 +9,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" prefHeight="60.0" prefWidth="265.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.fxmls.ExAppCard">
+<HBox alignment="CENTER" prefHeight="60.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.exAppCardController">
     <children>
-        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="68.0" HBox.hgrow="ALWAYS">
+        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="50.0">
             <children>
-                <ImageView fitHeight="37.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="appIcon" fitHeight="37.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../icons/youtube.png" />
+                        <Image url="@../icons/default_app.png" />
                     </image>
                 </ImageView>
             </children>
         </HBox>
-        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="90.0" spacing="5.0">
             <children>
-                <Label contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Youtube">
+                <Label fx:id="appNameLabel" contentDisplay="CENTER" prefHeight="19.0" prefWidth="90.0" text="Youtube">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
@@ -33,8 +33,11 @@
                     </font>
                 </Label>
             </children>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
         </VBox>
-        <JFXToggleButton fx:id="youtubeBtn" ellipsisString="" prefHeight="58.0" prefWidth="11.0" />
+        <JFXToggleButton fx:id="appBtn" ellipsisString="" onMouseClicked="#onAppBtnPressed" prefHeight="53.0" prefWidth="62.0" />
     </children>
     <padding>
         <Insets right="10.0" />

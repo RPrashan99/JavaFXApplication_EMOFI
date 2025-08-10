@@ -12,12 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="registrationAnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.registrationPaneController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="410.0">
          <center>
-            <VBox alignment="CENTER" fillWidth="false" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #7059B0;" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" fillWidth="false" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #9877AB;" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="20.0">
                      <children>

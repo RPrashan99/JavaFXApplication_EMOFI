@@ -49,9 +49,9 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //original
-//        System.out.println("Tool started");
-//        Platform.runLater(this::setStateInit);
-//        showWidgetWindow(stage);
+        System.out.println("Tool started");
+        Platform.runLater(this::setStateInit);
+        showWidgetWindow(stage);
 
         //setStateInit();
         //showRecommendationWindowWithoutPool();
@@ -61,7 +61,7 @@ public class MainApplication extends Application {
 
         //showSearchQueryWindow("Relaxing video");
         //messagePortalWindow();
-        testWindows(stage);
+        //testWindows(stage);
         //startEMOIFY(stage);
     }
 

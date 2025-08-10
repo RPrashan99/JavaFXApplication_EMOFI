@@ -9,6 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -285,6 +286,43 @@ public class ApiClient {
                 .thenApply(response -> {
                             int status = response.statusCode();
                             System.out.println("Api response: " + response);
+                            return status;
+                        }
+                );
+    }
+
+    public static CompletableFuture<Integer> setAppSettings(List<String> apps, Map<String, Boolean> values) {
+
+        StringBuilder appSettingsJson = new StringBuilder("[");
+        for (int i = 0; i < apps.size(); i++) {
+            if (i > 0) {
+                appSettingsJson.append(",");
+            }
+            appSettingsJson.append(String.format(
+                    "{\"appName\":\"%s\",\"value\":%b}",
+                    escapeJson(apps.get(i)),
+                    values.get(apps.get(i))
+            ));
+        }
+        appSettingsJson.append("]");
+
+        // Build the complete JSON payload
+        String json = String.format(
+                "{\"userID\":\"%s\",\"appSettings\":%s}",
+                1,
+                appSettingsJson
+        );
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/editAppSettings"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply( response ->{
+                            int status = response.statusCode();
+
                             return status;
                         }
                 );

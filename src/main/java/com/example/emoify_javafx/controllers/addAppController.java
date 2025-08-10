@@ -18,12 +18,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class addAppController {
 
     @FXML private VBox mainContainer;
     @FXML private Button submitButton;
     @FXML private ScrollPane scrollPane;
+
+    private Consumer<Boolean> appSubmitHandler;
 
     private String userName;
     private final String[] categories = {"Songs", "Entertainment", "SocialMedia",
@@ -46,6 +49,10 @@ public class addAppController {
     @FXML
     private void initialize() {
         initializeCategories();
+    }
+
+    public void setAppSubmitHandler(Consumer<Boolean> handler) {
+        this.appSubmitHandler = handler;
     }
 
     private void initializeCategories() {
@@ -172,6 +179,10 @@ public class addAppController {
                             alert.setHeaderText(null);
                             alert.setContentText("Your preferences have been saved!");
                             alert.showAndWait();
+
+                            if (appSubmitHandler != null) {
+                                appSubmitHandler.accept(true);
+                            }
 
                             // Close the window
                             ((Stage) submitButton.getScene().getWindow()).close();

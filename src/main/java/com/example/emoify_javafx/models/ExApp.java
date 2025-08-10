@@ -7,18 +7,20 @@ public class ExApp {
 
     SimpleStringProperty appName;
     SimpleStringProperty path;
-
     SimpleStringProperty iconPath;
-    SimpleBooleanProperty isAccessGiven;
+    SimpleStringProperty category;
     SimpleBooleanProperty isAvailable;
+    SimpleBooleanProperty isLocal;
 
-    public ExApp(String appName, String path, String iconPath, Boolean isAccessGiven, Boolean isAvailable) {
+    public ExApp(String appName, String path, String iconPath, String category, Boolean isAvailable, Boolean isLocal) {
         this.appName = new SimpleStringProperty(appName);
         this.path = new SimpleStringProperty(path);
         this.iconPath = new SimpleStringProperty(iconPath);
+        this.category = new SimpleStringProperty(category);
         this.iconPath = new SimpleStringProperty();
-        this.isAccessGiven = new SimpleBooleanProperty(isAccessGiven);
         this.isAvailable = new SimpleBooleanProperty(isAvailable);
+        this.isLocal = new SimpleBooleanProperty(isLocal);
+
     }
 
     public String getAppName() {
@@ -45,16 +47,28 @@ public class ExApp {
         this.path.set(path);
     }
 
-    public boolean isIsAccessGiven() {
-        return isAccessGiven.get();
+    public String getIconPath() {
+        return iconPath.get();
     }
 
-    public SimpleBooleanProperty isAccessGivenProperty() {
-        return isAccessGiven;
+    public SimpleStringProperty iconPathProperty() {
+        return iconPath;
     }
 
-    public void setIsAccessGiven(boolean isAccessGiven) {
-        this.isAccessGiven.set(isAccessGiven);
+    public void setIconPath(String iconPath) {
+        this.iconPath.set(iconPath);
+    }
+
+    public String getCategory() {
+        return category.get();
+    }
+
+    public SimpleStringProperty categoryProperty() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category.set(category);
     }
 
     public boolean isIsAvailable() {
@@ -67,5 +81,17 @@ public class ExApp {
 
     public void setIsAvailable(boolean isAvailable) {
         this.isAvailable.set(isAvailable);
+    }
+
+    public boolean isIsLocal() {
+        return isLocal.get();
+    }
+
+    public SimpleBooleanProperty isLocalProperty() {
+        return isLocal;
+    }
+
+    public void setIsLocal(boolean isLocal) {
+        this.isLocal.set(isLocal);
     }
 }
