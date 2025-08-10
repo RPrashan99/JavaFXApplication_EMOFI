@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.emoify_javafx.controllers.addAppController"
+      stylesheets="@../css/add-apps.css"
+      prefWidth="480" prefHeight="580">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <spacing>15</spacing>
+
+    <Label text="Register Applications" styleClass="header-text"/>
+
+    <Label text="Add apps installed on your system" styleClass="subheader-text"/>
+
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                styleClass="scroll-pane" vvalue="1.0">
+        <VBox fx:id="mainContainer" spacing="12" styleClass="app-list-container"/>
+    </ScrollPane>
+
+    <Button fx:id="submitButton" text="Save Preferences" styleClass="submit-button" onAction="#handleSubmit"/>
+</VBox>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.emoify_javafx.controllers.addAppPopupController"
+      stylesheets="@../css/add-apps.css"
+      prefWidth="380" prefHeight="320"
+      spacing="15" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Add New Application" styleClass="popup-header"/>
+
+    <Label text="Type the name then click search button. If location is not detected, browse manually."
+           styleClass="popup-subheader" wrapText="true"/>
+
+    <VBox spacing="8">
+        <Label text="App Name:" styleClass="input-label"/>
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <TextField fx:id="appNameField" styleClass="app-input"/>
+            <Button text="🔍" styleClass="search-button" onAction="#searchInstalledApps"/>
+        </HBox>
+    </VBox>
+
+    <VBox spacing="8">
+        <Label text="App Location:" styleClass="input-label"/>
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <TextField fx:id="appPathField" styleClass="app-input"/>
+            <Button text="📁" styleClass="browse-button" onAction="#browseFile"/>
+        </HBox>
+    </VBox>
+
+    <Button text="Add Application" styleClass="add-app-button" onAction="#saveApp"/>
+</VBox>

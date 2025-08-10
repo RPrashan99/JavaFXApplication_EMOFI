@@ -13,6 +13,7 @@ module com.example.emoify_javafx {
     requires com.jfoenix;
     requires com.google.common;
     requires com.google.gson;
+    requires com.sun.jna.platform;
 
     opens com.example.emoify_javafx to javafx.fxml;
     opens com.example.emoify_javafx.controllers to javafx.fxml;

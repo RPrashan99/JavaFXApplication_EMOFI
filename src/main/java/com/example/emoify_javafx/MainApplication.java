@@ -49,9 +49,9 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //original
-        System.out.println("Tool started");
-        Platform.runLater(this::setStateInit);
-        showWidgetWindow(stage);
+//        System.out.println("Tool started");
+//        Platform.runLater(this::setStateInit);
+//        showWidgetWindow(stage);
 
         //setStateInit();
         //showRecommendationWindowWithoutPool();
@@ -61,7 +61,7 @@ public class MainApplication extends Application {
 
         //showSearchQueryWindow("Relaxing video");
         //messagePortalWindow();
-        //testWindows(stage);
+        testWindows(stage);
         //startEMOIFY(stage);
     }
 
@@ -126,8 +126,11 @@ public class MainApplication extends Application {
     }
 
     private void testWindows(Stage stage) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/chatWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/exAppWindow.fxml"));
         Parent root = loader.load();
+
+        exAppController exAppController = loader.getController();
+        exAppController.setUserName("User 99");
 
         stage.initStyle(StageStyle.UNDECORATED);
         Scene sc = new Scene(root, 475, 351);

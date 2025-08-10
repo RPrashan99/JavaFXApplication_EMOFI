@@ -5,66 +5,32 @@ import com.example.emoify_javafx.models.ExApp;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import com.jfoenix.controls.JFXToggleButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 public class exAppController implements Initializable {
 
     @FXML
-    private Label discordAvailableLabel;
-
-    @FXML
-    private JFXToggleButton discordBtn;
-
-    @FXML
-    private Label solitaireAvailableLabel;
-
-    @FXML
-    private JFXToggleButton solitaireBtn;
-
-    @FXML
-    private Label spotifyAvailableLabel;
-
-    @FXML
-    private JFXToggleButton spotifyBtn;
-
-    @FXML
-    private Label teamsAvailableLabel;
-
-    @FXML
-    private JFXToggleButton teamsBtn;
-
-    @FXML
-    private Label telegramAvailableLabel;
-
-    @FXML
-    private JFXToggleButton telegramBtn;
-
-    @FXML
-    private Label whatsappAvailableLabel;
-
-    @FXML
-    private JFXToggleButton whatsappBtn;
-
-    @FXML
-    private JFXToggleButton youtubeBtn;
-
-    @FXML
-    private Label ytAvailableLabel;
-
-    @FXML
-    private Label zoomAvailableLabel;
-
-    @FXML
-    private JFXToggleButton zoomBtn;
+    private ScrollPane scrollAppPane;
 
     private ObservableList<ExApp> exApps;
 
@@ -80,34 +46,13 @@ public class exAppController implements Initializable {
 
         appLabels = new HashMap<>();
         appButtons = new HashMap<>();
-        createButtonList();
-        createLabelList();
 
-        updateAppDetails();
+        setAppBox();
+//        createButtonList();
+//        createLabelList();
+
+//        updateAppDetails();
     }
-
-    private void createLabelList(){
-        appLabels.put("Youtube", ytAvailableLabel);
-        appLabels.put("Telegram", teamsAvailableLabel);
-        appLabels.put("Whatsapp", whatsappAvailableLabel);
-        appLabels.put("Zoom", zoomAvailableLabel);
-        appLabels.put("Spotify", spotifyAvailableLabel);
-        appLabels.put("Teams", teamsAvailableLabel);
-        appLabels.put("Discord", discordAvailableLabel);
-        appLabels.put("Solitaire", solitaireAvailableLabel);
-    }
-
-    private void createButtonList(){
-        appButtons.put("Youtube", youtubeBtn);
-        appButtons.put("Telegram", telegramBtn);
-        appButtons.put("Whatsapp", whatsappBtn);
-        appButtons.put("Zoom", zoomBtn);
-        appButtons.put("Spotify", spotifyBtn);
-        appButtons.put("Teams", teamsBtn);
-        appButtons.put("Discord", discordBtn);
-        appButtons.put("Solitaire", solitaireBtn);
-    }
-
     private void updateAppDetails(){
         ApiClient.getAppDetails().thenAccept(response -> {
             JSONArray appsArray = new JSONArray(response);
@@ -128,6 +73,91 @@ public class exAppController implements Initializable {
 
             setAppDetails();
         });
+    }
+
+    private void setAppBox(){
+        GridPane appPane = new GridPane();
+        appPane.setHgap(10); // Horizontal gap between columns
+        appPane.setVgap(10); // Vertical gap between rows
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        col1.setPercentWidth(50); // Each column takes 50% of width
+        col2.setPercentWidth(50);
+        appPane.getColumnConstraints().addAll(col1, col2);
+
+        appPane.setPadding(new Insets(10, 10, 10, 10));
+
+        // Sample data - in a real app this would come from your data source
+        String[] buttonData = {
+                "Button 1",
+                "Button 2",
+                "Button 3",
+                "Button 4",
+                "Button 5",
+                "Button 6",
+                "Button 7",
+                "Button 8",
+                "Button 9"
+        };
+
+        // Dynamically add HBoxes with buttons
+        for (int i = 0; i < buttonData.length; i++) {
+            HBox hbox = new HBox(10); // 10 is the spacing between buttons
+            hbox.setHgrow(hbox, Priority.ALWAYS); // Make HBox grow horizontally
+            hbox.setStyle("""
+                -fx-background-color: #f8f9fa;
+                -fx-background-radius: 10;
+                -fx-border-radius: 10;
+                -fx-border-color: #e0e0e0;
+                -fx-border-width: 1;
+                -fx-padding: 15;
+                -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+            """);
+
+            // Set uniform height constraints
+            hbox.setMinHeight(40); // Minimum height
+            hbox.setPrefHeight(40); // Preferred height
+            hbox.setMaxHeight(40);
+
+            // Create buttons for this row
+            JFXToggleButton btn1 = new JFXToggleButton();
+            Label btnLabel = new Label(buttonData[i]);
+
+            // Make buttons grow to fill available space
+            HBox.setHgrow(btn1, Priority.ALWAYS);
+            btn1.setPrefHeight(40);
+
+            hbox.getChildren().addAll(btnLabel, btn1);
+            int row = 0;
+            if(i < 2){
+                row = 0;
+            }else{
+                row = i / 2;
+            }
+            System.out.println("i: " + i + " row: " + row );
+
+            if(i % 2 == 0){
+                appPane.add(hbox, 0, row); // Add to grid in column 0, current row
+            }else{
+                appPane.add(hbox, 1, row); // Add to grid in column 0, current row
+            }
+        }
+
+        scrollAppPane.setContent(appPane);
+        scrollAppPane.setFitToWidth(true); // Makes content fill viewport width
+        scrollAppPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // No horizontal scroll
+
+        // IMPORTANT: Let GridPane grow vertically
+        scrollAppPane.setContent(appPane);
+        GridPane.setVgrow(appPane, Priority.ALWAYS);
+
+        GridPane.setVgrow(appPane, Priority.ALWAYS);
+        appPane.setMaxWidth(Double.MAX_VALUE);
+
+        // Wrap in VBox to ensure proper sizing (optional but recommended)
+//        VBox root = new VBox(scrollPane);
+//        VBox.setVgrow(scrollPane, Priority.ALWAYS);
     }
 
     private void setAppDetails(){
@@ -167,11 +197,27 @@ public class exAppController implements Initializable {
     @FXML
     void handleAddApp(MouseEvent event){
 
-        ApiClient.openAddApp(userName).thenAccept(reposnse -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/emoify_javafx/fxmls/addAppWindow.fxml"));
+                Parent root = loader.load();
 
-            System.out.println("Response: " + reposnse.toString());
+                addAppController controller = loader.getController();
+                controller.setUserName(userName);
 
-        });
+                Stage stage = new Stage();
+                stage.setTitle("Add Applications");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+//        ApiClient.openAddApp(userName).thenAccept(reposnse -> {
+//
+//            System.out.println("Response: " + reposnse.toString());
+//
+//        });
 
     }
 }
