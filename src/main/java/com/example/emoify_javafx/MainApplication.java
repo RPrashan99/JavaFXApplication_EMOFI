@@ -1,6 +1,7 @@
 package com.example.emoify_javafx;
 
 import com.example.emoify_javafx.controllers.*;
+import com.example.emoify_javafx.models.BackendConnector;
 import com.example.emoify_javafx.models.RecommendationApp;
 import com.example.emoify_javafx.models.User;
 import javafx.animation.FadeTransition;
@@ -12,6 +13,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -38,6 +42,10 @@ public class MainApplication extends Application {
 
     HttpPollingService pollingServiceRecommendationShow;
 
+    private boolean isRegistered = false; //check user registered before
+    private boolean isOpen = false; // check main window still open
+    private Process pythonProcess;//python process
+
     @Override
     public void start(Stage stage) throws IOException {
         //original
@@ -53,7 +61,56 @@ public class MainApplication extends Application {
 
         //showSearchQueryWindow("Relaxing video");
         //messagePortalWindow();
-        testWindows(stage);
+        //testWindows(stage);
+        //startEMOIFY(stage);
+    }
+
+    private void startEMOIFY(Stage primaryStage) {
+        // Start Python backend
+        startPythonBackend();
+
+        // UI Components
+        Label statusLabel = new Label("Status: Starting...");
+        Button refreshButton = new Button("Refresh Status");
+
+        refreshButton.setOnAction(e -> {
+            String status = BackendConnector.getStatus();
+            statusLabel.setText("Status: " + status);
+        });
+
+        VBox root = new VBox(10, statusLabel, refreshButton);
+        Scene scene = new Scene(root, 300, 200);
+
+        primaryStage.setTitle("JavaFX Frontend");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        // Initialize backend connection
+        BackendConnector.startBackend();
+    }
+
+    private void startPythonBackend() {
+        try {
+            // Path to your python executable and main.py
+            String pythonPath = "C:\\Users\\rpras\\anaconda3\\envs\\myenv\\python.exe"; // or "python3" or full path
+            String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
+
+            pythonProcess = new ProcessBuilder(pythonPath, scriptPath).start();
+
+            // Wait a moment for the server to start
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void stop() {
+        // Stop backend when JavaFX application closes
+        BackendConnector.stopBackend();
+        if (pythonProcess != null && pythonProcess.isAlive()) {
+            pythonProcess.destroy();
+        }
     }
 
     private void setStateInit(){
@@ -90,7 +147,11 @@ public class MainApplication extends Application {
 
         widgetController.setWidgetOpenHandler(user -> {
             try {
-                showInitialLoadingWindow(stage);
+                if(isRegistered){
+                    showMainWindow(user);
+                }else{
+                    showInitialLoadingWindow(stage);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -196,6 +257,7 @@ public class MainApplication extends Application {
     }
 
     private void showMainWindow(String user) throws IOException {
+        isRegistered = true;
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("mainWindow.fxml"));
         Scene sc = new Scene(fxmlLoader.load(), 600, 400);
 
