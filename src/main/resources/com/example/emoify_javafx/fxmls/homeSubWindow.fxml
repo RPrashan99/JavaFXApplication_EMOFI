@@ -10,30 +10,30 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.homeController">
+<AnchorPane prefHeight="350.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.homeController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="369.0" prefWidth="473.0" spacing="5.0" style="-fx-background-color: #1E203F;">
+      <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="500.0" spacing="15.0" style="-fx-background-color: #F8EEFC;">
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
          <children>
-            <ImageView fx:id="emotionImage" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="emotionImage" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../icons/emotions/neutral_gif.gif" />
                </image>
             </ImageView>
-            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="452.0" spacing="10.0">
+            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="200" spacing="10.0" style="-fx-background-color: #9877AB; -fx-background-radius: 10; -fx-padding:5 ">
                <children>
-                  <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="5.0">
+                  <VBox alignment="TOP_CENTER" prefWidth="90.0" spacing="5.0" styleClass="status-box" stylesheets="@../css/styling.css">
                      <children>
-                        <Label alignment="CENTER" text="System" textFill="WHITE">
+                        <Label alignment="CENTER" text="System" textFill="#0f1443">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
                         <Label fx:id="systemStatus" alignment="CENTER" text="Active" textFill="#1bea41">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
@@ -41,10 +41,10 @@
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </VBox>
-                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="#e40fe4" />
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="#252A75" />
+                  <VBox alignment="TOP_CENTER" prefWidth="90.0" spacing="5.0" styleClass="status-box" stylesheets="@../css/styling.css">
                      <children>
-                        <Label alignment="CENTER" text="Emotion" textFill="WHITE">
+                        <Label alignment="CENTER" text="Emotion" textFill="#0f1443">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -59,17 +59,17 @@
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </VBox>
-                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="#e40fe4" />
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="#252A75" />
+                  <VBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="102.0" spacing="5.0" styleClass="status-box" stylesheets="@../css/styling.css">
                      <children>
-                        <Label alignment="CENTER" text="Last Response" textFill="WHITE">
+                        <Label alignment="CENTER" text="Last Response" textFill="#0F1443">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
                         <Label fx:id="lastResponseTime" alignment="CENTER" text="18 mins ago" textFill="WHITE">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
@@ -82,24 +82,20 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <Line endX="300.0" startX="-100.0" stroke="#41076e" strokeWidth="2.0">
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-            </Line>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+            <Line endX="250.0" startX="-100.0" stroke="#0F1443" strokeWidth="2.0" />
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <HBox spacing="20.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
+                  <HBox spacing="15.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
                      <children>
-                        <Label contentDisplay="CENTER" prefWidth="150.0" text="Last Recommendation" textFill="WHITE">
+                        <Label prefWidth="140.0" text="Last Recommendation" textFill="#0F1443">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text=":" textFill="WHITE" />
-                        <Label fx:id="lastRecommendation" text="Relaxing music" textFill="WHITE" HBox.hgrow="ALWAYS">
+                        <Label text=":" textFill="#0F1443" />
+                        <Label fx:id="lastRecommendation" text="Relaxing music" textFill="#CC4A72" HBox.hgrow="ALWAYS">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
@@ -107,17 +103,17 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox id="detailSlot1" spacing="20.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
+                  <HBox id="detailSlot1" spacing="15.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
                      <children>
-                        <Label prefWidth="150.0" text="Last action taken" textFill="WHITE">
+                        <Label prefWidth="140.0" text="Last action taken" textFill="#0F1443">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label text=":" textFill="WHITE" />
-                        <Label fx:id="lastActionApp" text="Youtube" textFill="WHITE" HBox.hgrow="ALWAYS">
+                        <Label text=":" textFill="#0F1443" />
+                        <Label fx:id="lastActionApp" text="Youtube" textFill="#CC4A72" HBox.hgrow="ALWAYS">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
@@ -127,7 +123,7 @@
                   </HBox>
                </children>
                <padding>
-                  <Insets left="50.0" right="50.0" />
+                  <Insets left="20.0" right="20.0" />
                </padding>
             </VBox>
          </children>

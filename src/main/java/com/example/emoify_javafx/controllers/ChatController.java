@@ -30,37 +30,18 @@ public class ChatController {
     @FXML
     private TextField userInput;
 
-//    @FXML
-//    private void handleSend() {
-//        String message = userInput.getText().trim();
-//        if (message.isEmpty()) return;
-//
-//        // Add user bubble
-//        chatList.getItems().add(createBubble(message, Pos.CENTER_RIGHT, "#DCF8C6"));
-//        userInput.clear();
-//
-//        // Send to backend
-//        new Thread(() -> {
-//            String botReply = sendMessageToBackend(message);
-//
-//            javafx.application.Platform.runLater(() -> {
-//                chatList.getItems().add(createBubble(botReply, Pos.CENTER_LEFT, "#FFFFFF"));
-//            });
-//        }).start();
-//    }
-
     @FXML
     private void handleSend() {
         String message = userInput.getText().trim();
         if (message.isEmpty()) return;
 
         // Add user bubble with animation
-        HBox userBubble = createBubble(message, Pos.CENTER_RIGHT, "#DCF8C6");
-        userBubble.setOpacity(0);
-        chatList.getItems().add(userBubble);
+        HBox userBubbleContainer = createBubble(message, Pos.CENTER_RIGHT, "#E0CCF9");
+        userBubbleContainer.setOpacity(0);
+        chatList.getItems().add(userBubbleContainer);
 
         // Animate user message appearance
-        FadeTransition userFade = new FadeTransition(Duration.millis(200), userBubble);
+        FadeTransition userFade = new FadeTransition(Duration.millis(200), userBubbleContainer);
         userFade.setFromValue(0);
         userFade.setToValue(1);
         userFade.play();
@@ -71,7 +52,6 @@ public class ChatController {
         Label typingIndicator = new Label("...");
         typingIndicator.setStyle("-fx-text-fill: #999999; -fx-font-style: italic;");
         HBox typingBubble = createBubble("", Pos.CENTER_LEFT, "#F5F5F5");
-        typingBubble.getChildren().get(0).setStyle("-fx-padding: 8 15;");
 
         Platform.runLater(() -> {
             chatList.getItems().add(typingBubble);
@@ -86,18 +66,18 @@ public class ChatController {
                 chatList.getItems().remove(typingBubble);
 
                 // Add bot response with animation
-                HBox botBubble = createBubble(botReply, Pos.CENTER_LEFT, "#FFFFFF");
-                botBubble.setOpacity(0);
-                chatList.getItems().add(botBubble);
+                HBox botBubbleContainer = createBubble(botReply, Pos.CENTER_LEFT, "#FBB292");
+                botBubbleContainer.setOpacity(0);
+                chatList.getItems().add(botBubbleContainer);
 
                 // Animate bot message appearance
-                ScaleTransition scaleIn = new ScaleTransition(Duration.millis(150), botBubble);
+                ScaleTransition scaleIn = new ScaleTransition(Duration.millis(150), botBubbleContainer);
                 scaleIn.setFromX(0.95);
                 scaleIn.setFromY(0.95);
                 scaleIn.setToX(1.0);
                 scaleIn.setToY(1.0);
 
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(250), botBubble);
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(250), botBubbleContainer);
                 fadeIn.setFromValue(0);
                 fadeIn.setToValue(1);
 
@@ -112,60 +92,23 @@ public class ChatController {
         }).start();
     }
 
-//    private HBox createBubble(String message, Pos alignment, String color) {
-//        Text text = new Text(message);
-//        text.wrappingWidthProperty().set(400);
-//
-//        Label label = new Label();
-//        label.setGraphic(text);
-//        label.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 15; -fx-padding: 10;");
-//
-//        HBox bubble = new HBox(label);
-//        bubble.setMaxWidth(500);
-//        bubble.setAlignment(alignment);
-//        bubble.setSpacing(5);
-//        bubble.setPadding(new Insets(5, 10, 5, 10));
-//
-//        return bubble;
-//    }
-
     private HBox createBubble(String message, Pos alignment, String color) {
-        // Text styling
-        Text text = new Text(message);
-        text.setFont(Font.font("Segoe UI", 14));
-        text.setFill(Color.web("#333333")); // Darker text for better readability
-        text.wrappingWidthProperty().set(350); // Slightly narrower for better readability
+        // Create a Label for the message content
+        Label label = new Label(message);
+        label.setWrapText(true);
+        // Set a max width to prevent bubbles from getting too wide in a long chat window
+        label.setMaxWidth(300);
 
-        // Label (bubble container)
-        Label label = new Label();
-        label.setGraphic(text);
-        label.setContentDisplay(ContentDisplay.RIGHT);
-        label.setStyle(
-                "-fx-background-color: " + color + ";" +
-                        "-fx-background-radius: 18;" + // More rounded corners
-                        "-fx-padding: 12 15;" + // More horizontal padding
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.2, 0, 1);" + // Subtle shadow
-                        "-fx-border-radius: 18;" +
-                        "-fx-border-color: derive(" + color + ", -10%);" + // Slightly darker border
-                        "-fx-border-width: 1;"
-        );
+        // This inner HBox acts as the bubble itself. Its size will be based on the label.
+        HBox bubbleContent = new HBox(label);
+        bubbleContent.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 20; -fx-padding: 8 15;");
 
-        // HBox container
-        HBox bubble = new HBox(label);
-        bubble.setMaxWidth(450); // Slightly smaller max width
-        bubble.setAlignment(alignment);
-        bubble.setPadding(new Insets(5, 15, 5, 15)); // More side padding
+        // The outer HBox is for alignment within the ListView cell.
+        // It does not have a fixed width, so the bubble can be as wide as its content.
+        HBox container = new HBox(bubbleContent);
+        container.setAlignment(alignment);
 
-        // Add smooth entrance animation
-        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(150), bubble);
-        scaleIn.setFromX(0.9);
-        scaleIn.setFromY(0.9);
-        scaleIn.setToX(1.0);
-        scaleIn.setToY(1.0);
-        scaleIn.setInterpolator(Interpolator.EASE_OUT);
-        scaleIn.play();
-
-        return bubble;
+        return container;
     }
 
     private String sendMessageToBackend(String message) {

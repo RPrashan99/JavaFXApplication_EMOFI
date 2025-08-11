@@ -13,36 +13,42 @@
 
 <AnchorPane fx:id="registrationAnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.initialLoadingController">
    <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="410.0">
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="410.0" style="-fx-background-color: #F8EEFC;">
          <center>
-            <VBox alignment="CENTER" fillWidth="false" spacing="10.0" style="-fx-background-color: #59488B;" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" fillWidth="false" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" style="-fx-background-color: #9877A8; -fx-background-radius: 20;">
+                  <HBox alignment="CENTER">
                      <children>
-                        <ImageView fx:id="appIcon" fitHeight="99.0" fitWidth="92.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="appIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../icons/icon4.png" />
                            </image>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
                         </ImageView>
                      </children>
-                     <padding>
-                        <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
-                     </padding>
                   </HBox>
-                  <Label fx:id="loadingLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="473.0" style="-fx-background-color: #CF4C6E;" text="Emoify System loading" textFill="WHITE" VBox.vgrow="ALWAYS">
+                  <Label fx:id="loadingLabel" alignment="CENTER" contentDisplay="CENTER" prefWidth="300.0" style="-fx-background-color: #E0CCF9; -fx-background-radius: 15;" text="Emoify System is loading" textFill="#0f1443">
                      <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="16.0" />
                      </font>
+                     <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                     </padding>
                   </Label>
-                  <ImageView fx:id="loadingIcon" fitHeight="64.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="loadingIcon" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../icons/Loader.gif" />
                      </image>
                   </ImageView>
-                  <Button fx:id="ctnBtn" mnemonicParsing="false" onMouseClicked="#handleLoginBtn" prefWidth="100.0" style="-fx-background-color: #CF4C6E;" styleClass="recRecommendationAppBtn" stylesheets="@../css/styling.css" text="Login" textFill="WHITE">
+                  <Button fx:id="ctnBtn" mnemonicParsing="false" onMouseClicked="#handleLoginBtn" prefWidth="100.0" styleClass="login-button" stylesheets="@../css/styling.css" text="Register" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
                   </Button>
                </children>
             </VBox>

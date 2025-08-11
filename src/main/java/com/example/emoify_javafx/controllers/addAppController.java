@@ -73,7 +73,7 @@ public class addAppController {
             addButton.getStyleClass().add("add-button");
             addButton.setOnAction(e -> showAddAppPopup(category));
 
-            headerBox.getChildren().addAll(categoryLabel, addButton);
+            headerBox.getChildren().addAll(addButton, categoryLabel);
 
             ScrollPane appScrollPane = new ScrollPane();
             appScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);

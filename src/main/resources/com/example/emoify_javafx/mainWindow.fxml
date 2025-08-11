@@ -1,68 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.MainController">
    <children>
-      <BorderPane layoutY="1.0" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane prefHeight="400.0" prefWidth="600.0">
          <top>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="586.0" spacing="10.0" style="-fx-background-color: #545AB0;" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="10.0" style="-fx-background-color: #6A296A;" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <ImageView fitHeight="47.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@icons/appIcon.jpg" />
                            </image>
                         </ImageView>
-                        <Label contentDisplay="CENTER" graphicTextGap="10.0" text=" Emoify Core " textFill="WHITE">
+                        <Label text="Emoify Core" textFill="white">
                            <font>
                               <Font name="Berlin Sans FB" size="20.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button id="closeBtn" fx:id="closeBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="2.0" mnemonicParsing="false" onMouseClicked="#handleCloseBtn" prefHeight="14.0" prefWidth="28.0" styleClass="closeBtn" stylesheets="@css/styling.css" HBox.hgrow="ALWAYS">
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button id="closeBtn" fx:id="closeBtn" mnemonicParsing="false" onMouseClicked="#handleCloseBtn" prefHeight="25.0" prefWidth="25.0" styleClass="closeBtn" stylesheets="@css/styling.css">
                      <graphic>
-                        <ImageView blendMode="SCREEN" fitHeight="17.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@icons/close.png" />
                            </image>
                         </ImageView>
                      </graphic>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
                   </Button>
                </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
                <padding>
-                  <Insets left="20.0" right="20.0" />
+                  <Insets left="15.0" />
                </padding>
             </HBox>
          </top>
          <left>
-            <VBox prefHeight="347.0" prefWidth="127.0" style="-fx-background-color: #8065CC;" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="10.0" style="-fx-background-color: #6A296A;" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="homeButton" mnemonicParsing="false" onAction="#loadHomeWindow" prefHeight="26.0" prefWidth="131.0" styleClass="menuButton" stylesheets="@css/styling.css" text="Home" textFill="WHITE" />
-                  <Button fx:id="appsButton" mnemonicParsing="false" onAction="#loadAppsWindow" prefHeight="26.0" prefWidth="131.0" styleClass="menuButton" stylesheets="@css/styling.css" text="Apps" textFill="WHITE" />
-                  <Button fx:id="chatButton" mnemonicParsing="false" onAction="#loadChatWindow" prefHeight="26.0" prefWidth="131.0" styleClass="menuButton" stylesheets="@css/styling.css" text="Chat" textFill="WHITE" />
-                  <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#loadSettingsWindow" prefHeight="26.0" prefWidth="131.0" styleClass="menuButton" stylesheets="@css/styling.css" text="Settings" textFill="WHITE" />
+                  <Button fx:id="homeButton" mnemonicParsing="false" onAction="#loadHomeWindow" prefHeight="40.0" prefWidth="40.0" styleClass="menuButton" stylesheets="@css/styling.css">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/home_window.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="appsButton" mnemonicParsing="false" onAction="#loadAppsWindow" prefHeight="40.0" prefWidth="40.0" styleClass="menuButton" stylesheets="@css/styling.css">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/apps.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="chatsButton" mnemonicParsing="false" onAction="#loadChatWindow" prefHeight="40.0" prefWidth="40.0" styleClass="menuButton" stylesheets="@css/styling.css">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/chat-bot.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="logsButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="menuButton" stylesheets="@css/styling.css">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/script.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#loadSettingsWindow" prefHeight="40.0" prefWidth="40.0" styleClass="menuButton" stylesheets="@css/styling.css">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icons/settings.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
             </VBox>
          </left>
          <center>
-            <AnchorPane fx:id="contentPane" prefHeight="369.0" prefWidth="473.0" BorderPane.alignment="CENTER" />
+            <AnchorPane fx:id="contentPane" prefHeight="400.0" prefWidth="450.0" style="-fx-background-color: #F8EEFC;" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>

@@ -3,7 +3,6 @@ package com.example.emoify_javafx;
 import com.example.emoify_javafx.controllers.*;
 import com.example.emoify_javafx.models.BackendConnector;
 import com.example.emoify_javafx.models.RecommendationApp;
-import com.example.emoify_javafx.models.User;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
@@ -26,6 +25,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainApplication extends Application {
     double x, y = 0;
@@ -104,14 +104,14 @@ public class MainApplication extends Application {
         }
     }
 
-    @Override
-    public void stop() {
-        // Stop backend when JavaFX application closes
-        BackendConnector.stopBackend();
-        if (pythonProcess != null && pythonProcess.isAlive()) {
-            pythonProcess.destroy();
-        }
-    }
+//    @Override
+//    public void stop() {
+//        // Stop backend when JavaFX application closes
+//        BackendConnector.stopBackend();
+//        if (pythonProcess != null && pythonProcess.isAlive()) {
+//            pythonProcess.destroy();
+//        }
+//    }
 
     private void setStateInit(){
         ApiClient.setStateInit().thenAccept(response -> {

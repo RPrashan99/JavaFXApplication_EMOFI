@@ -2,6 +2,7 @@ package com.example.emoify_javafx.controllers;
 
 import com.example.emoify_javafx.models.RegistrationData;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;

@@ -141,14 +141,30 @@
     -fx-background-color: #8A5FD7;
 }
 
-.add-app-button {
-    -fx-background-color: -accent-blue;
+.add-app-button{
+    -fx-background-color: linear-gradient(to right, #ff9966, #ff5e62); /* Gradient */
     -fx-text-fill: white;
-    -fx-background-radius: 8;
-    -fx-padding: 10 25;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 20px;
+    -fx-padding: 10 10;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0.3, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
 }
 
 .add-app-button:hover {
-    -fx-background-color: #7299E8;
+    -fx-background-color: linear-gradient(to right, #ff5e62, #ff9966);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 10, 0.3, 0, 3);
+}
+.add-app-button:pressed{
+    -fx-background-color: linear-gradient(to right, #ff5e62, #ff9966);
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.2, 0, 1);
 }

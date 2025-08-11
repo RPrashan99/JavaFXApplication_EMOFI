@@ -23,5 +23,5 @@
         <VBox fx:id="mainContainer" spacing="12" styleClass="app-list-container"/>
     </ScrollPane>
 
-    <Button fx:id="submitButton" text="Save Preferences" styleClass="submit-button" onAction="#handleSubmit"/>
+    <Button fx:id="submitButton" text="Save Preferences" styleClass="add-app-button" onAction="#handleSubmit"/>
 </VBox>

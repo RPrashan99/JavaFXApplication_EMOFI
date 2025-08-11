@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="registrationAnchorPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.registrationPaneController">
+<AnchorPane fx:id="registrationAnchorPane" prefHeight="298.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.registrationPaneController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="410.0">
          <center>
-            <VBox alignment="CENTER" fillWidth="false" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #9877AB;" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" fillWidth="false" prefHeight="364.0" prefWidth="410.0" spacing="30.0" style="-fx-background-color: #e0ccf9;" BorderPane.alignment="TOP_CENTER">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="20.0">
                      <children>
@@ -27,7 +27,7 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" fillWidth="false" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label text="User Name" textFill="WHITE">
+                              <Label text="User Name" textFill="#6a296a">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
@@ -46,7 +46,7 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" fillWidth="false" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label text="Password" textFill="WHITE">
+                              <Label text="Password" textFill="#6a296a">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>
@@ -65,7 +65,7 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" fillWidth="false" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label text="Phone number" textFill="WHITE">
+                              <Label text="Phone number" textFill="#6a296a">
                                  <font>
                                     <Font name="System Bold" size="14.0" />
                                  </font>

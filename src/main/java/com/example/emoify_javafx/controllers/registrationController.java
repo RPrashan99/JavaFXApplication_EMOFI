@@ -111,7 +111,7 @@ public class registrationController implements Initializable {
 
         ApiClient.saveUserData(uName, pass, pNum).thenAccept(response -> {
 
-            if(response == 200){
+            if(response == 201){
                 System.out.println("Save new User Data success!");
             }else{
                 System.out.println("Save new User Data failed!");

@@ -77,36 +77,42 @@ public class initialLoadingController implements Initializable {
     }
 
     private void checkLogin(){
+        String imagePath = "/com/example/emoify_javafx/icons/Success.gif";
+        Image image = new Image(getClass().getResourceAsStream(imagePath));
+
         ApiClient.getLogin().thenAccept(response -> {
 
             JSONObject jsonObject = new JSONObject(response);
 
-            JSONArray jsonArray = jsonObject.getJSONArray("user");
+            String message = jsonObject.getString("message");
 
-            List<Object> list = jsonArray.toList();
+            if(!message.equals("No users available")){
+                JSONArray jsonArray = jsonObject.getJSONArray("user");
 
-            String userName = list.get(1).toString();
+                List<Object> list = jsonArray.toList();
 
-            System.out.println("Username: " + userName);
+                String userName = list.get(1).toString();
 
-            if(!jsonArray.isEmpty()){
+                System.out.println("Username: " + userName);
+
                 Platform.runLater(() -> {
-                    String imagePath = "/com/example/emoify_javafx/icons/Success.gif";
-                    Image image = new Image(getClass().getResourceAsStream(imagePath));
                     loadingIcon.setImage(image);
 
                     loadingLabel.setText("Loading successful");
-
+                    ctnBtn.setText("Login");
                     ctnBtn.setVisible(true);
 
                     output = userName;
                 });
+
             }else{
+                loadingIcon.setImage(image);
+
+                loadingLabel.setText("Loading successful");
                 ctnBtn.setVisible(true);
                 ctnBtn.setText("Register");
                 output = "Register";
             }
-
         });
     }
 

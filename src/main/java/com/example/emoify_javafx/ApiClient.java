@@ -61,7 +61,7 @@ public class ApiClient {
     """, userName, password, phoneNumber);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/saveUserData"))
+                .uri(URI.create(BASE_URL + "/createNewUser"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
