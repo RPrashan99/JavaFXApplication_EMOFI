@@ -57,6 +57,8 @@ public class MainApplication extends Application {
     private boolean isOpen = false; // check main window still open
     private Process pythonProcess;//python process
     private boolean isStarted = false;
+    private MainController mainControllerClass;
+    private String recommendation, selectedRecommendedApp;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -307,6 +309,11 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("mainWindow.fxml"));
         Scene sc = new Scene(fxmlLoader.load(), 600, 400);
 
+        mainControllerClass = fxmlLoader.getController();
+        if(recommendation != null && selectedRecommendedApp != null){
+            mainControllerClass.setRecommendationLabels(recommendation, selectedRecommendedApp);
+        }
+
         Stage mainStage = new Stage();
         mainStage.initStyle(StageStyle.UNDECORATED);
 
@@ -444,6 +451,7 @@ public class MainApplication extends Application {
                 System.out.println("No search query");
                 sendMessageInfo(data.get(0), data.get(1), "");
             }
+            setRecommendationLabels();
 
             regStage.close();
 
@@ -529,6 +537,8 @@ public class MainApplication extends Application {
 
             String rec = selectedApp.get(0);
             String app = selectedApp.get(1);
+            recommendation = rec;
+            selectedRecommendedApp = app;
 
             List<RecommendationApp> recApps = recommendationsAppClasses.get(rec);
 
@@ -633,6 +643,20 @@ public class MainApplication extends Application {
                 System.out.println("Message send failed!");
             }
         });
+    }
+
+    //set recommendation state labels in home controller
+    private void setRecommendationLabels(){
+        System.out.println("Recommendation: " + recommendation + " selectedApp: " + selectedRecommendedApp);
+        if(mainControllerClass != null){
+            if(recommendation != null && selectedRecommendedApp != null){
+                mainControllerClass.setRecommendationLabels(recommendation, selectedRecommendedApp);
+            } else if (recommendation != null) {
+                mainControllerClass.setRecommendationLabels(recommendation, "--------");
+            }else if (selectedRecommendedApp != null){
+                mainControllerClass.setRecommendationLabels("--------", selectedRecommendedApp);
+            }
+        }
     }
 
     public static void main(String[] args) {

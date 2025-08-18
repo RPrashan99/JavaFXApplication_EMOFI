@@ -93,7 +93,7 @@
                            </font>
                         </Label>
                         <Label text=":" textFill="#0F1443" />
-                        <Label fx:id="lastRecommendation" text="Relaxing music" textFill="#CC4A72" HBox.hgrow="ALWAYS">
+                        <Label fx:id="lastRecommendation" text="- - - - - - - - - -" textFill="#CC4A72" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -111,7 +111,7 @@
                            </font>
                         </Label>
                         <Label text=":" textFill="#0F1443" />
-                        <Label fx:id="lastActionApp" text="Youtube" textFill="#CC4A72" HBox.hgrow="ALWAYS">
+                        <Label fx:id="lastActionApp" text="- - - - - - - - - -" textFill="#CC4A72" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="13.0" />
                            </font>

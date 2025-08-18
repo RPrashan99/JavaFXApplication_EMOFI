@@ -173,7 +173,6 @@ public class MainController implements Initializable {
     }
 
     public void updateHomeUI(String status, String emotion, String lastRes){
-
         homeControllerClass.updateStateLabels(status, emotion, lastRes);
         homeControllerClass.updateEmotionImage(emotion);
     }
@@ -193,7 +192,7 @@ public class MainController implements Initializable {
         System.out.println("System disable: " + disableBoolean);
 
         String valueRecTime = settings.get("recommendationTime");
-        Integer recTimeInt = Integer.parseInt(valueRecTime);
+        Double recTimeInt = Double.parseDouble(valueRecTime);
         System.out.println("Recommendation Time: " + recTimeInt);
 
         String valueRestTime = settings.get("restTime");
@@ -214,6 +213,10 @@ public class MainController implements Initializable {
     }
     public void setUserName(String user){
         userName = user;
+    }
+
+    public void setRecommendationLabels(String recommendation, String action){
+        homeControllerClass.updateLastRecordsLabels(recommendation, action);
     }
 
     @Override

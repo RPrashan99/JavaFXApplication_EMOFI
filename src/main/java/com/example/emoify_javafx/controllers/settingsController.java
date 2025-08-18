@@ -5,9 +5,11 @@ import com.jfoenix.controls.JFXToggleButton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory;
+import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,7 +30,10 @@ public class settingsController {
     private JFXToggleButton systemDisableToggleBtn;
 
     @FXML
-    private Spinner<Integer> recommendationTimeSpinner, restTimeSpinner, appExecuteTimeSpinner;
+    private Spinner<Integer> restTimeSpinner, appExecuteTimeSpinner;
+
+    @FXML
+    private Spinner<Double> recommendationTimeSpinner;
 
     private ToggleButton[] soundButtons;
 
@@ -43,9 +48,9 @@ public class settingsController {
         setupSoundButtonGroup();
 
         // Initialize spinners
-        recommendationTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 60, 0));
-        restTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 60, 0));
-        appExecuteTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 120, 0));
+        recommendationTimeSpinner.setValueFactory(new DoubleSpinnerValueFactory(0.5, 60, 1, 0.5));
+        restTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 60, 1));
+        appExecuteTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 120, 1));
 
         // Optional: Setup apply button
         applyBtn.setOnAction(e -> applySettings());
@@ -67,7 +72,7 @@ public class settingsController {
     private void applySettings() {
         boolean isSystemDisabled = systemDisableToggleBtn.isSelected();
         String soundLevel = getSelectedSoundLevel();
-        int recommendationTime = recommendationTimeSpinner.getValue();
+        Double recommendationTime = recommendationTimeSpinner.getValue();
         int restTime = restTimeSpinner.getValue();
         int executionTime = appExecuteTimeSpinner.getValue();
 
@@ -111,7 +116,7 @@ public class settingsController {
         return "None";
     }
 
-    public void setInitialValues(boolean disableState, String soundState, Integer recT, Integer restT, Integer execT){
+    public void setInitialValues(boolean disableState, String soundState, Double recT, Integer restT, Integer execT){
         //disable state
 
         if(!settings.isEmpty()){
@@ -142,8 +147,8 @@ public class settingsController {
                 }
             }
 
-            if((Integer) settings.get("recTime") != recT){
-                recommendationTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 60, recT));
+            if((Double) settings.get("recTime") != recT){
+                recommendationTimeSpinner.setValueFactory(new DoubleSpinnerValueFactory(0.5, 60, recT, 0.5));
                 settings.replace("recTime", recT);
             }
             if((Integer) settings.get("restTime") != restT){
@@ -180,7 +185,7 @@ public class settingsController {
             }
 
             //timers set
-            recommendationTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 60, recT));
+            recommendationTimeSpinner.setValueFactory(new DoubleSpinnerValueFactory(0.5, 60, recT, 0.5));
             settings.put("recTime", recT);
             restTimeSpinner.setValueFactory(new IntegerSpinnerValueFactory(1, 60, restT));
             settings.put("restTime", restT);
@@ -229,7 +234,7 @@ public class settingsController {
         System.out.println("System disable: " + disableBoolean);
 
         String valueRecTime = settings_set.get("recommendationTime");
-        Integer recTimeInt = Integer.parseInt(valueRecTime);
+        Double recTimeInt = Double.parseDouble(valueRecTime);
         System.out.println("Recommendation Time: " + recTimeInt);
 
         String valueRestTime = settings_set.get("restTime");

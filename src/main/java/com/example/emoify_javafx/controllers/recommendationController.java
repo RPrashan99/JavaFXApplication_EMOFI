@@ -21,8 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.JSONArray;
@@ -30,11 +28,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.http.HttpResponse;
-import java.time.Duration;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
+import javafx.scene.media.AudioClip;
 
 import static com.example.emoify_javafx.models.AnimationEvent.EventType.FINISHED;
 import static com.example.emoify_javafx.models.AnimationEvent.EventType.STARTED;
@@ -71,9 +66,7 @@ public class recommendationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //appNames = new ArrayList<>();
-        //appIcons = new ArrayList<>();
-        //getRecommendationPolling();
+
         AnimationEventBus.getInstance().register(this);
         //fetchRecommendationsFromApi();
         try {
@@ -81,6 +74,7 @@ public class recommendationController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        Platform.runLater(this::playSound);
     }
 
     public void setCallback(CallbackListener callback) {
@@ -350,5 +344,19 @@ public class recommendationController implements Initializable {
     void handleCloseBtn(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    public void playSound() {
+        // Load the sound file (should be in your resources folder)
+        AudioClip sound = new AudioClip(getClass().getResource("/com/example/emoify_javafx/sounds/happy_meme.wav").toString());
+
+        // Play the sound
+        sound.play();
+
+        // You can also control volume (0.0 to 1.0)
+        sound.setVolume(0.7);
+
+        // For continuous play
+        sound.setCycleCount(2);
     }
 }

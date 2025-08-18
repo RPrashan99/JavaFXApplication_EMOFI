@@ -48,8 +48,8 @@ public class homeController implements Initializable {
         systemStatus.setText("Loading");
         emotionState.setText("Loading");
         lastResponseTime.setText("Loading");
-        lastActionApp.setText("Loading");
-        lastRecommendation.setText("Loading");
+        lastActionApp.setText("--------");
+        lastRecommendation.setText("--------");
         //refreshStates();
         updateLastRecords();
     }
@@ -135,17 +135,17 @@ public class homeController implements Initializable {
     }
 
     private void updateLastRecords (){
-        ApiClient.getLastRecords().thenAccept(response -> {
-            JSONObject status = new JSONObject(response);
-
-            String sysRec = status.getString("recommendation");
-            String sysAct = status.getString("action");
-
-            updateLastRecordsLabels(sysRec, sysAct);
-        });
+//        ApiClient.getLastRecords().thenAccept(response -> {
+//            JSONObject status = new JSONObject(response);
+//
+//            String sysRec = status.getString("recommendation");
+//            String sysAct = status.getString("action");
+//
+//            updateLastRecordsLabels(sysRec, sysAct);
+//        });
     }
 
-    private void updateLastRecordsLabels(String recommendation, String action){
+    public void updateLastRecordsLabels(String recommendation, String action){
         if(!recommendation.isEmpty() && !action.isEmpty()){
             Platform.runLater(() -> {
                 lastRecommendation.setText(recommendation);
