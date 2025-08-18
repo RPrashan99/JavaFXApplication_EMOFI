@@ -10,7 +10,7 @@
 
 /* Main button style */
 .main-button {
-    -fx-background-color: #9D1A71;
+    -fx-background-color:  #9D1A71;
     -fx-text-fill: white;
     -fx-cursor: hand;
     -fx-font-weight: bold;

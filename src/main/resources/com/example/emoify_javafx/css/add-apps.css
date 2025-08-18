@@ -110,6 +110,7 @@
 .popup-subheader {
     -fx-text-fill: -primary-medium;
     -fx-font-size: 13px;
+    -fx-text-alignment: center;
     -fx-padding: 0 0 10 0;
 }
 
@@ -125,8 +126,21 @@
     -fx-border-color: #D9D1F9;
     -fx-border-radius: 6;
     -fx-padding: 8 12;
-    -fx-pref-width: 250;
+    -fx-pref-width: 300;
 }
+
+/* Specific styling for the ComboBox to make it look like a TextField */
+.combo-box.app-input .text-field {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Hides the default dropdown arrow button on the ComboBox */
+.combo-box.app-input .arrow-button {
+    -fx-padding: 0;
+    -fx-opacity: 0;
+}
+
 
 .search-button, .browse-button {
     -fx-background-color: -accent-purple;

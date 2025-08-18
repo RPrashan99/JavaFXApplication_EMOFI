@@ -1,9 +1,12 @@
 package com.example.emoify_javafx.controllers;
 
 import com.example.emoify_javafx.ApiClient;
+import com.example.emoify_javafx.models.ExApp;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,11 +32,23 @@ public class addAppController {
 
     private Consumer<Boolean> appSubmitHandler;
 
+    private Consumer<Map<String, List<AppData>>> appSaveHandler;
+
     private String userName;
     private final String[] categories = {"Songs", "Entertainment", "SocialMedia",
             "Games", "Communication", "Help", "Other"};
-    private Map<String, VBox> categoryContainers = new HashMap<>();
+    private Map<String, HBox> categoryContainers = new HashMap<>();
     private Map<String, List<AppData>> categoryApps = new HashMap<>();
+    private List<ExApp> existingApps;
+
+    private boolean openCondition = false;
+
+    public void setExistingApps(List<ExApp> apps) {
+        this.existingApps = apps;
+        existingApps.forEach(app ->
+                System.out.println("App name: " + app.getAppName() + ", Path: " + app.getPath())
+        );
+    }
 
     public static class AppData {
         public String name;
@@ -51,8 +67,19 @@ public class addAppController {
         initializeCategories();
     }
 
+    public void handleCloseButton(ActionEvent event) {
+        // Get the stage from the event source (the button) and close it.
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+
     public void setAppSubmitHandler(Consumer<Boolean> handler) {
         this.appSubmitHandler = handler;
+    }
+
+    public void setAppSaveHandler(Consumer<Map<String, List<AppData>>> handler) {
+        this.appSaveHandler = handler;
     }
 
     private void initializeCategories() {
@@ -80,7 +107,7 @@ public class addAppController {
             appScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             appScrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
-            VBox appsContainer = new VBox();
+            HBox appsContainer = new HBox();
             appsContainer.setSpacing(10);
             appScrollPane.setContent(appsContainer);
 
@@ -100,8 +127,18 @@ public class addAppController {
             controller.setCategory(category);
             controller.setParentController(this);
 
+//            // Pass existing app names for duplicate check or filtering
+//            controller.setExistingAppNames(existingAppNames);
+//            System.out.println("apps in addAppController:"+ existingAppNames);
+
+            if (existingApps != null) {
+                controller.setExistingApps(existingApps);
+            }
+            System.out.println("apps in addAppController:"+ existingApps);
+
+
             Stage stage = new Stage();
-            stage.setTitle("Add Application");
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -112,15 +149,25 @@ public class addAppController {
     public void addAppToList(String category, String name, String path) {
         System.out.println("category1:" + category);
         try {
-            // Create icon (simplified - in real app you'd load actual icon)
-            // Create a placeholder icon. In a real app, you would load a proper icon.
-            //Image placeholderImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/emoify_javafx/assets/Other.png")));
-            ImageView iconView = new ImageView();
+            String defaultImage = "/com/example/emoify_javafx/icons/default_app.png";
+            String defaultPath = "/com/example/emoify_javafx/icons/";
+
+            ImageView appImage = new ImageView();
+
+            try{
+                String app = name.toLowerCase(Locale.ROOT);
+                Image image = new Image(getClass().getResourceAsStream(defaultPath + app + ".png"));
+                appImage.setImage(image);
+            }catch (Exception e){
+                Image image = new Image(getClass().getResourceAsStream(defaultImage));
+                appImage.setImage(image);
+            }
+
 //            iconView.setFitHeight(50);
 //            iconView.setFitWidth(50);
             // Here you would load the actual icon image
 
-            AppData appData = new AppData(name, path, iconView);
+            AppData appData = new AppData(name, path, appImage);
             categoryApps.get(category).add(appData);
             updateAppList(category);
         } catch (Exception e) {
@@ -129,7 +176,7 @@ public class addAppController {
     }
 
     private void updateAppList(String category) {
-        VBox container = categoryContainers.get(category);
+        HBox container = categoryContainers.get(category);
         container.getChildren().clear();
 
         for (AppData app : categoryApps.get(category)) {
@@ -168,37 +215,48 @@ public class addAppController {
 
     @FXML
     private void handleSubmit() {
-        System.out.println("Submitting all app data...");
 
-        ApiClient.addApp(categoryApps) // You need to pass categories array
-                .thenAccept(status -> {
-                    Platform.runLater(() -> {
-                        if (status >= 200 && status < 300) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Success");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Your preferences have been saved!");
-                            alert.showAndWait();
+        if(openCondition){
+            if(appSaveHandler != null){
+                appSaveHandler.accept(categoryApps);
+            }
 
-                            if (appSubmitHandler != null) {
-                                appSubmitHandler.accept(true);
+            ((Stage) submitButton.getScene().getWindow()).close();
+
+        }else{
+            System.out.println("Submitting all app data...");
+
+            ApiClient.addApp(categoryApps) // You need to pass categories array
+                    .thenAccept(status -> {
+                        Platform.runLater(() -> {
+                            if (status >= 200 && status < 300) {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Success");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Your preferences have been saved!");
+                                alert.showAndWait();
+
+                                if (appSubmitHandler != null) {
+                                    appSubmitHandler.accept(true);
+                                }
+
+                                // Close the window
+                                ((Stage) submitButton.getScene().getWindow()).close();
+                            } else {
+                                showAlert("Database Error", "Failed to save application data",
+                                        "Server returned status: " + status);
                             }
-
-                            // Close the window
-                            ((Stage) submitButton.getScene().getWindow()).close();
-                        } else {
+                        });
+                    })
+                    .exceptionally(e -> {
+                        Platform.runLater(() -> {
                             showAlert("Database Error", "Failed to save application data",
-                                    "Server returned status: " + status);
-                        }
+                                    e.getMessage());
+                        });
+                        return null;
                     });
-                })
-                .exceptionally(e -> {
-                    Platform.runLater(() -> {
-                        showAlert("Database Error", "Failed to save application data",
-                                e.getMessage());
-                    });
-                    return null;
-                });
+        }
+
     }
 
     private void showAlert(String title, String header, String content) {
@@ -211,5 +269,9 @@ public class addAppController {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setOpenCondition(boolean condition){
+        openCondition = condition;
     }
 }

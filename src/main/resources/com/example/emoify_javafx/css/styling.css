@@ -1,3 +1,7 @@
+.root {
+    -accent-purple: #774FC7;
+}
+
 /*.menuButton {*/
 /*    -fx-background-color: #7059B0;*/
 /*    -fx-text-fill: white;*/
@@ -146,7 +150,7 @@
 }
 
 .recRecommendationBtn {
-    -fx-background-color: #9D1A71;
+    -fx-background-color: linear-gradient(to right, #ff9966, #ff5e62);
     -fx-text-fill: white;
     -fx-cursor: hand;
     -fx-font-weight: bold;

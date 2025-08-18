@@ -22,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -170,26 +171,37 @@ public class exAppController implements Initializable {
     @FXML
     void handleAddApp(MouseEvent event){
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/emoify_javafx/fxmls/addAppWindow.fxml"));
-                Parent root = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/emoify_javafx/fxmls/addAppWindow.fxml"));
+            Parent root = loader.load();
 
-                addAppController controller = loader.getController();
-                controller.setUserName(userName);
+            addAppController controller = loader.getController();
+            controller.setUserName(userName);
 
-                controller.setAppSubmitHandler(data -> {
+//            // Pass the current list of exApps names to addAppController
+//            List<String> existingAppNames = exAppsList.stream()
+//                    .map(ExApp::getAppName)
+//                    .toList();
+//            controller.setExistingAppNames(existingAppNames);
+//            System.out.println("apps in esAppController:"+ existingAppNames);
 
-                    updateAppDetails();
 
-                });
+            // Pass the entire list of ExApp objects
+            controller.setExistingApps(new ArrayList<>(exAppsList));
 
-                Stage stage = new Stage();
-                stage.setTitle("Add Applications");
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            controller.setAppSubmitHandler(data -> {
+
+                updateAppDetails();
+
+            });
+
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
 //        ApiClient.openAddApp(userName).thenAccept(reposnse -> {

@@ -147,8 +147,10 @@ public class homeController implements Initializable {
 
     private void updateLastRecordsLabels(String recommendation, String action){
         if(!recommendation.isEmpty() && !action.isEmpty()){
-            lastRecommendation.setText(recommendation);
-            lastActionApp.setText(action);
+            Platform.runLater(() -> {
+                lastRecommendation.setText(recommendation);
+                lastActionApp.setText(action);
+            });
         }
     }
 }

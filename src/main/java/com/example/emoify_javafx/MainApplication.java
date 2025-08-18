@@ -22,15 +22,24 @@ import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MainApplication extends Application {
     double x, y = 0;
 
-    private boolean toolExecuted = false;
+    private int runTimes = 0;
+
+    private volatile boolean toolExecuted = false;
+    private volatile boolean recommendationWindowOpen = false;
+
+    private CompletableFuture<Void> pendingFetch = null;
 
     private List<String> recommendations = new ArrayList<>();
 
@@ -42,16 +51,19 @@ public class MainApplication extends Application {
 
     HttpPollingService pollingServiceRecommendationShow;
 
+    systemStartController systemStartControllerClass = new systemStartController();;
+
     private boolean isRegistered = false; //check user registered before
     private boolean isOpen = false; // check main window still open
     private Process pythonProcess;//python process
+    private boolean isStarted = false;
 
     @Override
     public void start(Stage stage) throws IOException {
         //original
-        System.out.println("Tool started");
-        Platform.runLater(this::setStateInit);
-        showWidgetWindow(stage);
+//        System.out.println("Tool started");
+//        Platform.runLater(this::setStateInit);
+//        showWidgetWindow(stage);
 
         //setStateInit();
         //showRecommendationWindowWithoutPool();
@@ -61,57 +73,98 @@ public class MainApplication extends Application {
 
         //showSearchQueryWindow("Relaxing video");
         //messagePortalWindow();
-        //testWindows(stage);
+        testWindows(stage);
         //startEMOIFY(stage);
     }
 
-    private void startEMOIFY(Stage primaryStage) {
-        // Start Python backend
-        startPythonBackend();
+    private void showSystemStartWindow(Stage stage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/systemStartWindow.fxml"));
+        Parent root = loader.load();
 
-        // UI Components
-        Label statusLabel = new Label("Status: Starting...");
-        Button refreshButton = new Button("Refresh Status");
+        Stage regStage = new Stage();
 
-        refreshButton.setOnAction(e -> {
-            String status = BackendConnector.getStatus();
-            statusLabel.setText("Status: " + status);
+        systemStartControllerClass = loader.getController();
+
+        systemStartControllerClass.setLoadingHandler(data -> {
+
+            regStage.close();
+
+            if(data.equals("Start")){
+                Platform.runLater(this::setStateInit);
+                try {
+                    showWidgetWindow(stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+//            else if (data.equals("Register")) {
+//                Platform.runLater(this::setStateInit);
+//                try {
+//                    showWidgetWindow(stage);
+//                    showInitialLoadingWindow(stage);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+
         });
 
-        VBox root = new VBox(10, statusLabel, refreshButton);
-        Scene scene = new Scene(root, 300, 200);
+        regStage.initStyle(StageStyle.UNDECORATED);
+        Scene sc = new Scene(root, 311, 156);
+        sc.setFill(Color.TRANSPARENT);
+        regStage.initStyle(StageStyle.TRANSPARENT);
+        regStage.setScene(sc);
 
-        primaryStage.setTitle("JavaFX Frontend");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        // Initialize backend connection
-        BackendConnector.startBackend();
+        regStage.show();
     }
 
     private void startPythonBackend() {
         try {
             // Path to your python executable and main.py
             String pythonPath = "C:\\Users\\rpras\\anaconda3\\envs\\myenv\\python.exe"; // or "python3" or full path
-            String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
+            //String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
 
-            pythonProcess = new ProcessBuilder(pythonPath, scriptPath).start();
+//            ProcessBuilder pb = new ProcessBuilder(pythonPath, "app.py");
+//
+//            pb.directory(new File("C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp"));
+//            pythonProcess = pb.start();
+            System.out.println("Backend starting..");
 
-            // Wait a moment for the server to start
-            Thread.sleep(2000);
+            new Thread(() -> {
+
+                try{
+                    Thread.sleep(2000);
+                    if(pythonProcess != null){
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(pythonProcess.getInputStream()));
+                        String line;
+                        while (!isStarted) {
+                            if((line = reader.readLine()) != null) {
+                                System.out.println("Python output: " + line);
+                                isStarted  = true;
+                            }
+                            Thread.sleep(500);
+                        }
+                    }
+                }catch (Exception e){
+                    System.out.println("Buffer read error");
+                }
+
+            }).start();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//    @Override
-//    public void stop() {
-//        // Stop backend when JavaFX application closes
-//        BackendConnector.stopBackend();
-//        if (pythonProcess != null && pythonProcess.isAlive()) {
-//            pythonProcess.destroy();
-//        }
-//    }
+    @Override
+    public void stop() {
+        // Stop backend when JavaFX application closes
+        BackendConnector.stopBackend();
+        if (pythonProcess != null && pythonProcess.isAlive()) {
+            pythonProcess.destroy();
+            System.out.println("Python process ended");
+        }
+    }
 
     private void setStateInit(){
         ApiClient.setStateInit().thenAccept(response -> {
@@ -126,19 +179,8 @@ public class MainApplication extends Application {
     }
 
     private void testWindows(Stage stage) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/exAppWindow.fxml"));
-        Parent root = loader.load();
-
-        exAppController exAppController = loader.getController();
-        exAppController.setUserName("User 99");
-
-        stage.initStyle(StageStyle.UNDECORATED);
-        Scene sc = new Scene(root, 475, 351);
-        sc.setFill(Color.TRANSPARENT);
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setScene(sc);
-
-        stage.show();
+        showSystemStartWindow(stage);
+        startPythonBackend();
     }
 
     private void showWidgetWindow(Stage stage) throws IOException{
@@ -234,6 +276,7 @@ public class MainApplication extends Application {
         regController.setRegistrationSuccessHandler(user -> {
             try {
                 String name = "user1";
+                BackendConnector.startBackend();
                 showMainWindow(name);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -323,7 +366,13 @@ public class MainApplication extends Application {
     }
 
     private void fetchRecommendations(){
-        ApiClient.getRecommendations().thenAccept(response -> {
+
+        if(pendingFetch != null && !pendingFetch.isDone()){
+            System.out.println("Still fetching recommendations..");
+            return;
+        }
+
+        pendingFetch = ApiClient.getRecommendations().thenAccept(response -> {
             System.out.println("Recommendation getting..");
             recommendations.clear();
             JSONArray appsArray = new JSONArray(response);
@@ -395,6 +444,7 @@ public class MainApplication extends Application {
                 System.out.println("No search query");
                 sendMessageInfo(data.get(0), data.get(1), "");
             }
+
             regStage.close();
 
         });
@@ -432,10 +482,11 @@ public class MainApplication extends Application {
         regStage.show();
         combinedTransition.play();
     }
+
     private void getRecommendationState(){
         pollingServiceRecommendationShow = new HttpPollingService(
                 "http://localhost:5000/api/getExecutedState",
-                Duration.ofSeconds(2)// Poll every 2 seconds
+                Duration.ofSeconds(3)// Poll every 3 seconds
         );
 
         // Handle successful updates
@@ -443,30 +494,21 @@ public class MainApplication extends Application {
 
             boolean showRecApp = false;
 
-            System.out.println("Polling running..");
+            //System.out.println("Polling running..");
 
-            if(!toolExecuted){
-                if(pollingServiceRecommendationShow.getValue() != null){
-
-                    JSONObject value = new JSONObject(pollingServiceRecommendationShow.getValue());
-
+            if(pollingServiceRecommendationShow.getValue() != null){
+                JSONObject value = new JSONObject(pollingServiceRecommendationShow.getValue());
+                if(!toolExecuted ){
                     showRecApp = value.getBoolean("show");
 
                     if(showRecApp){
+                        runTimes = runTimes + 1;
                         toolExecuted = true;
-                        System.out.println("App executed");
+                        System.out.println("App executed: " + runTimes);
                         fetchRecommendations();
-//                ApiClient.saveRecommendationState().thenAccept(response -> {
-//
-//                    if(response == 200){
-//                        System.out.println("App show");
-//
-//                    }else{
-//                        System.out.println("App execute send failed!");
-//                    }
-//                });
                     }
                 }
+
             }
 
         });
@@ -578,12 +620,21 @@ public class MainApplication extends Application {
         ApiClient.saveRecommendationState(recommendation, selectedApp, searchQuery).thenAccept(response -> {
             if(response == 200){
                 System.out.println("Message Send");
-                toolExecuted = false;
+
+                new Thread(()-> {
+                    try {
+                        Thread.sleep(2000);
+                        toolExecuted = false;
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).start();
             }else{
                 System.out.println("Message send failed!");
             }
         });
     }
+
     public static void main(String[] args) {
         launch();
     }

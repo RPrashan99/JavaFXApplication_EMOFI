@@ -99,7 +99,7 @@ public class initialLoadingController implements Initializable {
                     loadingIcon.setImage(image);
 
                     loadingLabel.setText("Loading successful");
-                    ctnBtn.setText("Login");
+                    ctnBtn.setText("Start");
                     ctnBtn.setVisible(true);
 
                     output = userName;

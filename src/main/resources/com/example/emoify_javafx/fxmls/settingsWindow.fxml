@@ -55,7 +55,7 @@
                               <HBox fx:id="systemSoundBtnGroup" alignment="CENTER_RIGHT" prefWidth="210.0" spacing="5.0">
                                  <children>
                                     <ToggleButton fx:id="lowSoundBtn" mnemonicParsing="false" prefWidth="70.0" styleClass="toggle-btn" stylesheets="@../css/styling.css" text="Low" />
-                                    <ToggleButton fx:id="midSoundBtn" mnemonicParsing="false" prefWidth="70.0" styleClass="toggle-btn" stylesheets="@../css/styling.css" text="Mid" />
+                                    <ToggleButton fx:id="midSoundBtn" mnemonicParsing="false" prefWidth="70.0" styleClass="toggle-btn" stylesheets="@../css/styling.css" text="Normal" />
                                     <ToggleButton fx:id="highSoundBtn" mnemonicParsing="false" prefWidth="70.0" styleClass="toggle-btn" stylesheets="@../css/styling.css" text="High" />
                                  </children>
                               </HBox>
@@ -84,12 +84,12 @@
                                              <children>
                                                 <VBox HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label text="Recommendation timer" textFill="#01031A">
+                                                      <Label text="Recommendation timer (mins)" textFill="#01031A">
                                                          <font>
                                                             <Font name="System Bold" size="13.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label text="Change time between recommendations" textFill="#252A75" />
+                                                      <Label text="Duration between recommendations" textFill="#252A75" />
                                                    </children>
                                                 </VBox>
                                                 <Region HBox.hgrow="ALWAYS" />
@@ -103,7 +103,7 @@
                                              <children>
                                                 <VBox HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label text="Rest timer" textFill="#01031A">
+                                                      <Label text="Rest timer (mins)" textFill="#01031A">
                                                          <font>
                                                             <Font name="System Bold" size="13.0" />
                                                          </font>
@@ -122,7 +122,7 @@
                                              <children>
                                                 <VBox HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Label text="App execution timer" textFill="#01031A">
+                                                      <Label text="App execution timer (mins))" textFill="#01031A">
                                                          <font>
                                                             <Font name="System Bold" size="13.0" />
                                                          </font>
