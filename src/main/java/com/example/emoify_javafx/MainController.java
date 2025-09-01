@@ -1,9 +1,6 @@
 package com.example.emoify_javafx;
 
-import com.example.emoify_javafx.controllers.ChatController;
-import com.example.emoify_javafx.controllers.exAppController;
-import com.example.emoify_javafx.controllers.homeController;
-import com.example.emoify_javafx.controllers.settingsController;
+import com.example.emoify_javafx.controllers.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,18 +38,20 @@ public class MainController implements Initializable {
     @FXML
     private Button chatButton;
 
-
     private HttpPollingService pollingService;
     private exAppController exAppControllerClass;
     private homeController homeControllerClass;
     private settingsController settingsControllerClass;
     private ChatController chatControllerClass;
+    private logSubWindowController logSubWindowControllerClass;
 
     private final Map<String, AnchorPane> loadedViews = new HashMap<>();
     private final Map<String, Object> controllers = new HashMap<>();
 
     private String userName = "";
     private Integer userID;
+
+    private Process pythonProcess;
 
     @FXML
     void handleCloseBtn(MouseEvent event) {
@@ -102,6 +101,12 @@ public class MainController implements Initializable {
                     //settingsControllerClass.setInitialValues(false, "Mid", 10, 10, 10);
                 } else if (controller instanceof ChatController) {
                     chatControllerClass = (ChatController) controller;
+                } else if (controller instanceof logSubWindowController) {
+                    logSubWindowControllerClass = (logSubWindowController) controller;
+                    if(pythonProcess != null) {
+                        logSubWindowControllerClass.setPythonProcess(pythonProcess);
+                        System.out.println("Python process 2");
+                    }
                 }
 
                 // Cache the loaded view
@@ -139,6 +144,10 @@ public class MainController implements Initializable {
     private void loadChatWindow(){
         setContent("fxmls/chatWindow.fxml", userName);
     }
+
+    @FXML
+    private void loadLogWindow() {setContent("fxmls/logSubWindow.fxml", userName);}
+
     private void initializeStream(){
         pollingService = new HttpPollingService(
                 "http://localhost:5000/api/stateUI",
@@ -217,6 +226,10 @@ public class MainController implements Initializable {
 
     public void setRecommendationLabels(String recommendation, String action){
         homeControllerClass.updateLastRecordsLabels(recommendation, action);
+    }
+
+    public void setPythonProcess(Process pyProcess){
+        pythonProcess = pyProcess;
     }
 
     @Override

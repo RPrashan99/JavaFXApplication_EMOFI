@@ -75,8 +75,8 @@ public class MainApplication extends Application {
 
         //showSearchQueryWindow("Relaxing video");
         //messagePortalWindow();
-        testWindows(stage);
-        //startEMOIFY(stage);
+        //testWindows(stage);
+        startEMOIFY(stage);
     }
 
     private void showSystemStartWindow(Stage stage) throws IOException {
@@ -95,6 +95,7 @@ public class MainApplication extends Application {
                 Platform.runLater(this::setStateInit);
                 try {
                     showWidgetWindow(stage);
+                    //testWindows(stage);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -124,13 +125,14 @@ public class MainApplication extends Application {
         try {
             // Path to your python executable and main.py
             String pythonPath = "C:\\Users\\rpras\\anaconda3\\envs\\myenv\\python.exe"; // or "python3" or full path
-            //String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
+            String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
 
-//            ProcessBuilder pb = new ProcessBuilder(pythonPath, "app.py");
-//
-//            pb.directory(new File("C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp"));
-//            pythonProcess = pb.start();
-            System.out.println("Backend starting..");
+            ProcessBuilder pb = new ProcessBuilder(pythonPath, "app.py");
+
+            pb.directory(new File("C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp"));
+            pb.redirectErrorStream(true);
+            pythonProcess = pb.start();
+            System.out.println("Backend starting..:" + pythonProcess.isAlive());
 
             new Thread(() -> {
 
@@ -144,7 +146,7 @@ public class MainApplication extends Application {
                                 System.out.println("Python output: " + line);
                                 isStarted  = true;
                             }
-                            Thread.sleep(500);
+                            //Thread.sleep(500);
                         }
                     }
                 }catch (Exception e){
@@ -162,8 +164,9 @@ public class MainApplication extends Application {
     public void stop() {
         // Stop backend when JavaFX application closes
         BackendConnector.stopBackend();
+        System.out.println("Python process state: " + pythonProcess.isAlive());
         if (pythonProcess != null && pythonProcess.isAlive()) {
-            pythonProcess.destroy();
+            pythonProcess.destroyForcibly();
             System.out.println("Python process ended");
         }
     }
@@ -181,6 +184,27 @@ public class MainApplication extends Application {
     }
 
     private void testWindows(Stage stage) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/logSubWindow.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Stage regStage = new Stage();
+
+        logSubWindowController controller = loader.getController();
+        controller.setPythonProcess(pythonProcess);
+
+        Scene sc = new Scene(root, 500, 350);
+        regStage.setScene(sc);
+
+        regStage.show();
+
+    }
+
+    private void startEMOIFY(Stage stage) throws IOException{
         showSystemStartWindow(stage);
         startPythonBackend();
     }
@@ -312,6 +336,13 @@ public class MainApplication extends Application {
         mainControllerClass = fxmlLoader.getController();
         if(recommendation != null && selectedRecommendedApp != null){
             mainControllerClass.setRecommendationLabels(recommendation, selectedRecommendedApp);
+        }
+
+        if(pythonProcess.isAlive()){
+            mainControllerClass.setPythonProcess(pythonProcess);
+            System.out.println("Python process 1");
+        }else{
+            System.out.println("Python process 1 null");
         }
 
         Stage mainStage = new Stage();
@@ -452,7 +483,7 @@ public class MainApplication extends Application {
                 sendMessageInfo(data.get(0), data.get(1), "");
             }
             setRecommendationLabels();
-
+            regStage.setAlwaysOnTop(true);
             regStage.close();
 
         });
