@@ -123,11 +123,11 @@ public class MainApplication extends Application {
 
     private void startPythonBackend() {
         try {
-            // Path to your python executable and main.py
+            //Path to your python executable and main.py
             String pythonPath = "C:\\Users\\rpras\\anaconda3\\envs\\myenv\\python.exe"; // or "python3" or full path
             String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
 
-            ProcessBuilder pb = new ProcessBuilder(pythonPath, "app.py");
+            ProcessBuilder pb = new ProcessBuilder(pythonPath, "-u", "app.py");
 
             pb.directory(new File("C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp"));
             pb.redirectErrorStream(true);

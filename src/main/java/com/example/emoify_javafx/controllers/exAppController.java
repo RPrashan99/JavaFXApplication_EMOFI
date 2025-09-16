@@ -1,6 +1,7 @@
 package com.example.emoify_javafx.controllers;
 
 import com.example.emoify_javafx.ApiClient;
+import com.example.emoify_javafx.models.CacheManager;
 import com.example.emoify_javafx.models.ExApp;
 import com.sun.jna.platform.win32.Mpr;
 import javafx.application.Platform;
@@ -30,6 +31,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+import com.google.gson.Gson;
+
 public class exAppController implements Initializable {
 
     @FXML
@@ -47,12 +50,17 @@ public class exAppController implements Initializable {
 
     private String userName = "";
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         applyBtn.setVisible(false);
-        updateAppDetails();
+
+        if(CacheManager.get("apps") != null){
+            System.out.println("Cached opened");
+            cachedAppDetails();
+        }else{
+            System.out.println("API opened");
+            updateAppDetails();
+        }
     }
     private void updateAppDetails(){
         exAppsList.clear();
@@ -78,8 +86,7 @@ public class exAppController implements Initializable {
                 ExApp newApp = new ExApp(appName, path, iconPath, category, available, isLocal);
                 exAppsList.add(newApp);
             }
-
-            System.out.println("app list: " + exAppsList);
+            CacheManager.put("apps", response);
 
             Platform.runLater(()->{
                 try {
@@ -88,6 +95,39 @@ public class exAppController implements Initializable {
                     throw new RuntimeException(e);
                 }
             });
+        });
+    }
+
+    private void cachedAppDetails(){
+
+        String apps = CacheManager.get("apps");
+
+        JSONObject appsObject = new JSONObject(apps);
+
+        JSONArray appsArray = appsObject.getJSONArray("apps");
+
+        for (int i = 0; i < appsArray.length(); i++) {
+
+            JSONObject appObject = appsArray.getJSONObject(i);
+            String appName = appObject.getString("name");
+            String path = appObject.getString("path");
+            Boolean isLocal = appObject.getBoolean("isLocal");
+            String category = appObject.getString("category");
+            //String iconPath = appObject.getString("icon");
+            Boolean available = appObject.getBoolean("isAvailable");
+
+            //dummy value
+            String iconPath = "NO ICON";
+            ExApp newApp = new ExApp(appName, path, iconPath, category, available, isLocal);
+            exAppsList.add(newApp);
+        }
+
+        Platform.runLater(()->{
+            try {
+                setAppBox();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
@@ -114,10 +154,9 @@ public class exAppController implements Initializable {
                 ExApp app = exAppsList.get(i);
 
                 exAppCardController exAppCardController =  loader.getController();
-                exAppCardController.setAppValues(app.getAppName(), app.getCategory(), app.isIsAvailable(), app.getIconPath());
+                exAppCardController.setAppValues(app.getAppName(), app.getCategory(), app.getIsAvailable(), app.getIconPath());
 
                 exAppCardController.setAppEnableHandler(isSelected -> {
-                    System.out.println("Changed");
                     if(appChangedList.containsKey(app.getAppName())){
                         appChangedList.remove(app.getAppName());
                     }else{
@@ -178,14 +217,6 @@ public class exAppController implements Initializable {
             addAppController controller = loader.getController();
             controller.setUserName(userName);
 
-//            // Pass the current list of exApps names to addAppController
-//            List<String> existingAppNames = exAppsList.stream()
-//                    .map(ExApp::getAppName)
-//                    .toList();
-//            controller.setExistingAppNames(existingAppNames);
-//            System.out.println("apps in esAppController:"+ existingAppNames);
-
-
             // Pass the entire list of ExApp objects
             controller.setExistingApps(new ArrayList<>(exAppsList));
 
@@ -202,20 +233,11 @@ public class exAppController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-//        ApiClient.openAddApp(userName).thenAccept(reposnse -> {
-//
-//            System.out.println("Response: " + reposnse.toString());
-//
-//        });
-
     }
 
     @FXML
     void handleApplyBtn(MouseEvent event){
 
-        System.out.println("Changed list: " + appChangedList);
         List<String> changedApps = new ArrayList<>();
         Map<String, Boolean> changedValues = new HashMap<String, Boolean>();
 
@@ -233,6 +255,7 @@ public class exAppController implements Initializable {
             if(response == 200){
                 System.out.println("Save new App Data success!");
                 applyBtn.setVisible(false);
+                appChangedList.clear();
             }else{
                 System.out.println("Save new App Data failed!");
             }

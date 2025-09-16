@@ -74,7 +74,7 @@ public class recommendationController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Platform.runLater(this::playSound);
+        //Platform.runLater(this::playSound);
     }
 
     public void setCallback(CallbackListener callback) {

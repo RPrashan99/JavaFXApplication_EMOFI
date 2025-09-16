@@ -12,12 +12,20 @@ public class ExApp {
     SimpleBooleanProperty isAvailable;
     SimpleBooleanProperty isLocal;
 
+    public ExApp() {
+        this.appName = new SimpleStringProperty("");
+        this.path = new SimpleStringProperty("");
+        this.iconPath = new SimpleStringProperty("");
+        this.category = new SimpleStringProperty("");
+        this.isAvailable = new SimpleBooleanProperty(false);
+        this.isLocal = new SimpleBooleanProperty(false);
+    }
+
     public ExApp(String appName, String path, String iconPath, String category, Boolean isAvailable, Boolean isLocal) {
         this.appName = new SimpleStringProperty(appName);
         this.path = new SimpleStringProperty(path);
-        this.iconPath = new SimpleStringProperty(iconPath);
         this.category = new SimpleStringProperty(category);
-        this.iconPath = new SimpleStringProperty();
+        this.iconPath = new SimpleStringProperty(iconPath);
         this.isAvailable = new SimpleBooleanProperty(isAvailable);
         this.isLocal = new SimpleBooleanProperty(isLocal);
 
@@ -71,7 +79,7 @@ public class ExApp {
         this.category.set(category);
     }
 
-    public boolean isIsAvailable() {
+    public boolean getIsAvailable() {
         return isAvailable.get();
     }
 
@@ -83,7 +91,7 @@ public class ExApp {
         this.isAvailable.set(isAvailable);
     }
 
-    public boolean isIsLocal() {
+    public boolean getIsLocal() {
         return isLocal.get();
     }
 
