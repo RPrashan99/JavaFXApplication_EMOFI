@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="350.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.homeController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="500.0" spacing="15.0" style="-fx-background-color: #F8EEFC;">
+      <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="500.0" spacing="10.0" style="-fx-background-color: #F8EEFC;">
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
@@ -83,44 +83,73 @@
                </VBox.margin>
             </HBox>
             <Line endX="250.0" startX="-100.0" stroke="#0F1443" strokeWidth="2.0" />
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                <children>
-                  <HBox spacing="15.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
+                  <HBox spacing="5.0">
                      <children>
-                        <Label prefWidth="140.0" text="Last Recommendation" textFill="#0F1443">
+                        <HBox styleClass="detailSlot1" stylesheets="@../css/styling.css" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="Last Recommendation" textFill="#0F1443">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label text=":" textFill="#0F1443" />
+                              <Label fx:id="lastRecommendation" text="- - - - - - -" textFill="#CC4A72" HBox.hgrow="ALWAYS">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox id="detailSlot1" styleClass="detailSlot1" stylesheets="@../css/styling.css" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="Last action taken" textFill="#0F1443">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label text=":" textFill="#0F1443" />
+                              <Label fx:id="lastActionApp" text="- - - - - - -" textFill="#CC4A72" HBox.hgrow="ALWAYS">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <VBox spacing="2.0" styleClass="detailSlot2" stylesheets="@../css/styling.css" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="motivationText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Motivation Quoate" wrapText="true" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="motivationAuthor" alignment="CENTER_RIGHT" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Author">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
                            <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text=":" textFill="#0F1443" />
-                        <Label fx:id="lastRecommendation" text="- - - - - - - - - -" textFill="#CC4A72" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font size="13.0" />
+                              <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
-                  </HBox>
-                  <HBox id="detailSlot1" spacing="15.0" styleClass="detailSlot1" stylesheets="@../css/styling.css">
-                     <children>
-                        <Label prefWidth="140.0" text="Last action taken" textFill="#0F1443">
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label text=":" textFill="#0F1443" />
-                        <Label fx:id="lastActionApp" text="- - - - - - - - - -" textFill="#CC4A72" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
+                  </VBox>
                </children>
                <padding>
                   <Insets left="20.0" right="20.0" />

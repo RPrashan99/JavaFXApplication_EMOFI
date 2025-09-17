@@ -327,4 +327,14 @@ public class ApiClient {
                         }
                 );
     }
+
+    public static CompletableFuture<String> getMotivation(){
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/motivations"))
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
 }

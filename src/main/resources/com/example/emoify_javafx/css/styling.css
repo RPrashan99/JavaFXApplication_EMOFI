@@ -284,3 +284,8 @@
 .toggle-btn:selected {
     -fx-background-color: #B05BBA;
 }
+
+.detailSlot2 {
+    -fx-background-color: #E0CCF9;
+    -fx-background-radius: 5
+}

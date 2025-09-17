@@ -35,10 +35,19 @@ public class homeController implements Initializable {
     @FXML
     private Label lastRecommendation;
 
+    @FXML
+    private Label motivationAuthor;
+
+    @FXML
+    private Label motivationText;
+
     private Map<String, String> emotionImagePaths;
 
     private String previousEmotion = "";
     private String previousSystemStatus = "";
+
+    private String motivationTextString = "";
+    private String motivationAuthorString = "";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -51,7 +60,10 @@ public class homeController implements Initializable {
         lastActionApp.setText("--------");
         lastRecommendation.setText("--------");
         //refreshStates();
-        updateLastRecords();
+
+        if(Objects.equals(motivationAuthorString, "")){
+            getMotivation();
+        }
     }
 
     private void imagesLoad(){
@@ -134,17 +146,6 @@ public class homeController implements Initializable {
         }
     }
 
-    private void updateLastRecords (){
-//        ApiClient.getLastRecords().thenAccept(response -> {
-//            JSONObject status = new JSONObject(response);
-//
-//            String sysRec = status.getString("recommendation");
-//            String sysAct = status.getString("action");
-//
-//            updateLastRecordsLabels(sysRec, sysAct);
-//        });
-    }
-
     public void updateLastRecordsLabels(String recommendation, String action){
         if(!recommendation.isEmpty() && !action.isEmpty()){
             Platform.runLater(() -> {
@@ -152,5 +153,23 @@ public class homeController implements Initializable {
                 lastActionApp.setText(action);
             });
         }
+    }
+
+    private void getMotivation(){
+        ApiClient.getMotivation().thenAccept(response -> {
+            JSONObject jsonObject = new JSONObject(response);
+
+            String motvAuthor = jsonObject.getString("author");
+            String motvText = jsonObject.getString("quote");
+            String motvTags = jsonObject.getString("tags");
+
+            motivationAuthorString = motvAuthor;
+            motivationTextString = motvText;
+
+            Platform.runLater(()->{
+                motivationAuthor.setText(motvAuthor);
+                motivationText.setText(motvText);
+            });
+        });
     }
 }
