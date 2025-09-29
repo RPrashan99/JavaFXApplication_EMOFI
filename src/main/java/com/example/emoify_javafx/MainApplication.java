@@ -123,7 +123,7 @@ public class MainApplication extends Application {
 
     private void startPythonBackend() {
         try {
-            //Path to your python executable and main.py
+            // Path to your python executable and main.py
             String pythonPath = "C:\\Users\\rpras\\anaconda3\\envs\\myenv\\python.exe"; // or "python3" or full path
             String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
 
@@ -639,7 +639,7 @@ public class MainApplication extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/whatsappWindow.fxml"));
         Parent root = loader.load();
 
-        messageWindowController searchController = loader.getController();
+        //messageWindowController searchController = loader.getController();
 
         Stage regStage = new Stage();
         regStage.initStyle(StageStyle.UNDECORATED);
