@@ -91,7 +91,7 @@ public class systemStartController implements Initializable {
 
     private void getSystemStartStatus(){
         pollingServiceSystemStartStatus = new HttpPollingService(
-                "http://localhost:5000/api/status",
+                "http://localhost:5050/api/status",
                 Duration.ofSeconds(2)// Poll every 2 seconds
         );
 

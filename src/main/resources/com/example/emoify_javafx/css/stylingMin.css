@@ -1,0 +1,53 @@
+.menuButton {
+    -fx-background-color: #5D48AB;
+    -fx-opacity: 1;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-border-color: #F8EEFC;
+    -fx-border-width: 0.5;
+    -fx-font-size: 16px;
+}
+
+.menuButton:hover {
+    -fx-background-color: #5D48AB;
+    -fx-opacity: 0.8;
+    -fx-cursor: hand;
+}
+
+.menuButton:pressed {
+    -fx-background-color: #B05BBA;
+}
+
+.menuButton:focused {
+    -fx-background-color: #9877AB;
+    -fx-border-color: #FBB7D0;
+    -fx-border-width: 0px 0px 0px 3px;
+}
+
+.registrationBtn {
+    -fx-background-color: linear-gradient(to right, #ff9966, #ff5e62); /* Gradient */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 80px;
+    -fx-pref-height: 10px;
+    -fx-padding: 1 1;
+    -fx-background-radius: 3;
+    -fx-border-radius: 3;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0.3, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.registrationBtn:hover {
+    -fx-background-color: linear-gradient(to right, #ff5e62, #ff9966);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 10, 0.3, 0, 3);
+}
+.registrationBtn:pressed{
+    -fx-background-color: linear-gradient(to right, #ff5e62, #ff9966);
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.2, 0, 1);
+}

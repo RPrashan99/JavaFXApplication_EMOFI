@@ -19,7 +19,7 @@ public class logSubWindowController {
     private void handleRunPython() {
 
         if(pythonProcess != null){
-            new Thread(() -> {
+            Thread t2 = new Thread(() -> {
                 try {
                     try (BufferedReader reader =
                                  new BufferedReader(new InputStreamReader(pythonProcess.getInputStream()))) {
@@ -38,7 +38,9 @@ public class logSubWindowController {
                 } catch (IOException | InterruptedException e) {
                     Platform.runLater(() -> logArea.appendText("Error: " + e.getMessage() + "\n"));
                 }
-            }).start();
+            });
+            t2.setDaemon(true);
+            t2.start();
         } else {
             System.out.println("Python process is null");
         }

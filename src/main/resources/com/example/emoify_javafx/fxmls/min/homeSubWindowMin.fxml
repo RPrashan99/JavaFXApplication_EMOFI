@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="350.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.emoify_javafx.controllers.homeController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: #F8EEFC;">
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+         <children>
+            <ImageView fx:id="emotionImage" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/emotions/neutral_gif.gif" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER" prefHeight="45.0" spacing="5.0" style="-fx-background-color: #9877AB; -fx-background-radius: 2; -fx-padding: 5;">
+               <children>
+                  <VBox alignment="TOP_CENTER" spacing="5.0" styleClass="status-box" stylesheets="@../css/styling.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" text="System" textFill="#0f1443">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="systemStatus" alignment="CENTER" text="Active" textFill="#1bea41">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+                  <Line endX="100.0" startX="99.7933120727539" startY="-51.44895553588867" stroke="#252A75" />
+                  <VBox alignment="TOP_CENTER" spacing="5.0" styleClass="status-box" stylesheets="@../css/styling.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" text="Emotion" textFill="#0f1443">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="emotionState" alignment="CENTER" text="Happy" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <Line endX="100.0" startX="-100.0" stroke="#0F1443" strokeWidth="2.0" />
+            <VBox prefHeight="200.0" spacing="5.0">
+               <children>
+                  <Label text="Last Recommendation" textFill="#0F1443">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lastRecommendation" alignment="CENTER" contentDisplay="CENTER" prefWidth="200.0" text="- - - - - - -" textAlignment="CENTER" textFill="#CC4A72" wrapText="true" VBox.vgrow="ALWAYS" />
+                  <Label text="Last action taken" textFill="#0F1443">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lastActionApp" alignment="CENTER" contentDisplay="CENTER" prefWidth="200.0" text="- - - - - - -" textFill="#CC4A72" wrapText="true" />
+                  <VBox spacing="2.0" styleClass="detailSlot2" stylesheets="@../css/styling.css" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="motivationText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Motivation Quoate" wrapText="true" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="motivationAuthor" alignment="CENTER_RIGHT" contentDisplay="TOP" maxWidth="1.7976931348623157E308" text="Author">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -67,12 +67,6 @@
     -fx-border-width: 0px 0px 0px 3px;
 }
 
-.menuButton:focused {
-    -fx-background-color: #9877AB;
-    -fx-border-color: #FBB7D0;
-    -fx-border-width: 0px 0px 0px 3px;
-}
-
 /* Window Close Button */
 .closeBtn {
     -fx-background-color: transparent;

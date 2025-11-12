@@ -373,13 +373,16 @@ public class addAppPopupController {
         }
 
         try {
-            List<Path> exeFiles = Files.walk(folder.toPath())
+            List<Path> exeFiles = new ArrayList<>(Files.walk(folder.toPath())
                     .filter(Files::isRegularFile)
                     .filter(p -> p.getFileName().toString().toLowerCase().endsWith(".exe"))
-                    .limit(1) // We only need the first one we find
-                    .toList();
+                    .limit(3) // We only need the first one we find
+                    .toList());
 
             if (!exeFiles.isEmpty()) {
+
+                exeFiles.removeIf(exePath -> exePath.getFileName().toString().toLowerCase().matches(".*(uninstall|unins\\d{3,}|remove|cleanup).*"));
+
                 return exeFiles.get(0).toString();
             }
 

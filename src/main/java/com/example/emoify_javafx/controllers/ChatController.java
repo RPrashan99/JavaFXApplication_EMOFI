@@ -114,7 +114,7 @@ public class ChatController {
     private String sendMessageToBackend(String message) {
         HttpURLConnection conn = null;
         try {
-            URL url = new URL("http://localhost:5000/chat");
+            URL url = new URL("http://localhost:5050/chat");
             conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");

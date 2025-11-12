@@ -133,8 +133,8 @@ public class exAppController implements Initializable {
 
     private void setAppBox() throws IOException {
         GridPane appPane = new GridPane();
-        appPane.setHgap(10); // Horizontal gap between columns
-        appPane.setVgap(10); // Vertical gap between rows
+        appPane.setHgap(10);
+        appPane.setVgap(10);
 
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
@@ -175,12 +175,11 @@ public class exAppController implements Initializable {
                 }else{
                     row = i / 2;
                 }
-                System.out.println("i: " + i + " row: " + row );
 
                 if(i % 2 == 0){
-                    appPane.add(appCard, 0, row); // Add to grid in column 0, current row
+                    appPane.add(appCard, 0, row);
                 }else{
-                    appPane.add(appCard, 1, row); // Add to grid in column 0, current row
+                    appPane.add(appCard, 1, row);
                 }
             }catch (IOException e){
                 System.out.println("Error: " + e);
@@ -188,19 +187,14 @@ public class exAppController implements Initializable {
         }
 
         scrollAppPane.setContent(appPane);
-        scrollAppPane.setFitToWidth(true); // Makes content fill viewport width
-        scrollAppPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // No horizontal scroll
+        scrollAppPane.setFitToWidth(true);
+        scrollAppPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        // IMPORTANT: Let GridPane grow vertically
         scrollAppPane.setContent(appPane);
         GridPane.setVgrow(appPane, Priority.ALWAYS);
 
         GridPane.setVgrow(appPane, Priority.ALWAYS);
         appPane.setMaxWidth(Double.MAX_VALUE);
-
-        // Wrap in VBox to ensure proper sizing (optional but recommended)
-//        VBox root = new VBox(scrollPane);
-//        VBox.setVgrow(scrollPane, Priority.ALWAYS);
     }
 
     public void setUserName(String user){
