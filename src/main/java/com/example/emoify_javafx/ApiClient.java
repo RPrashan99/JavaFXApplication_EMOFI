@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://localhost:5000/api";
+    private static final String BASE_URL = "http://localhost:5050/api";
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final String[] categories = {"Songs", "Entertainment", "SocialMedia",
             "Games", "Communication", "Help", "Other"};
@@ -331,6 +331,16 @@ public class ApiClient {
     public static CompletableFuture<String> getMotivation(){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/motivations"))
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<String> getServerCheck(){
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/status"))
                 .GET()
                 .build();
 

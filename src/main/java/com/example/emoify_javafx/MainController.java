@@ -150,7 +150,7 @@ public class MainController implements Initializable {
 
     private void initializeStream(){
         pollingService = new HttpPollingService(
-                "http://localhost:5000/api/stateUI",
+                "http://localhost:5050/api/stateUI",
                 Duration.ofSeconds(2)  // Poll every 2 seconds
         );
 

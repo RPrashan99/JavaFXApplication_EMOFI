@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import com.google.gson.Gson;
 
 public class BackendConnector {
-    private static final String BASE_URL = "http://localhost:5000/api";
+    private static final String BASE_URL = "http://localhost:5050/api";
     private static final Gson gson = new Gson();
 
     public static void startBackend() {

@@ -12,16 +12,12 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +25,7 @@ import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.TimeUnit;
 
 public class MainApplication extends Application {
     double x, y = 0;
@@ -51,11 +47,12 @@ public class MainApplication extends Application {
 
     HttpPollingService pollingServiceRecommendationShow;
 
-    systemStartController systemStartControllerClass = new systemStartController();;
+    systemStartController systemStartControllerClass = new systemStartController();
 
     private boolean isRegistered = false; //check user registered before
     private boolean isOpen = false; // check main window still open
     private Process pythonProcess;//python process
+    private long processID;
     private boolean isStarted = false;
     private MainController mainControllerClass;
     private String recommendation, selectedRecommendedApp;
@@ -125,7 +122,6 @@ public class MainApplication extends Application {
         try {
             // Path to your python executable and main.py
             String pythonPath = "C:\\Users\\rpras\\anaconda3\\envs\\myenv\\python.exe"; // or "python3" or full path
-            String scriptPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\FER Integration\\Facial_Emotion_Recongnition\\DesktopApp\\app.py";
 
             ProcessBuilder pb = new ProcessBuilder(pythonPath, "-u", "app.py");
 
@@ -160,14 +156,84 @@ public class MainApplication extends Application {
         }
     }
 
+    private void startPythonBackend_setupVersion() {
+        try {
+            String appPath = "C:\\Users\\rpras\\OneDrive\\Documents\\Rashmitha\\Semester_7\\project\\Desktop_app\\app.exe"; // or "python3" or full path
+
+            ProcessBuilder pb = new ProcessBuilder(appPath);
+            pb.redirectErrorStream(true);
+
+            pythonProcess = pb.start();
+            processID = pythonProcess.pid();
+            System.out.println("Backend starting..:" + pythonProcess.isAlive());
+
+            Thread t = new Thread(() -> {
+
+                try{
+                    Thread.sleep(2000);
+                    if(pythonProcess != null){
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(pythonProcess.getInputStream()));
+                        String line;
+                        while (!isStarted) {
+                            if((line = reader.readLine()) != null) {
+                                System.out.println("Python output: " + line);
+                                isStarted  = true;
+                            }
+                            //Thread.sleep(500);
+                        }
+                    }
+                }catch (Exception e){
+                    System.out.println("Buffer read error");
+                }
+
+            });
+            t.setDaemon(true);
+            t.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    public void stop() {
-        // Stop backend when JavaFX application closes
+    public void stop() throws Exception {
+
         BackendConnector.stopBackend();
         System.out.println("Python process state: " + pythonProcess.isAlive());
+//        if (pythonProcess != null && pythonProcess.isAlive()) {
+//            pythonProcess.destroy();
+//            System.out.println("Python process ended");
+//        }
+
+        stop_backendProcess();
+
+        Platform.exit();
+
+        System.out.println("\n=== Active Threads Before Exit ===");
+        Thread.getAllStackTraces().keySet().forEach(t -> {
+            System.out.println("Thread: " + t.getName() + " | Daemon: " + t.isDaemon());
+        });
+        System.out.println("==================================\n");
+
+        System.exit(0);
+    }
+
+    public void stop_backendProcess(){
         if (pythonProcess != null && pythonProcess.isAlive()) {
-            pythonProcess.destroyForcibly();
-            System.out.println("Python process ended");
+            ProcessHandle handle = pythonProcess.toHandle();
+            handle.descendants().forEach(ProcessHandle::destroy); // Kill all child processes
+            handle.destroy();
+
+            try {
+                if (!pythonProcess.waitFor(3, TimeUnit.SECONDS)) {
+                    handle.descendants().forEach(ProcessHandle::destroyForcibly);
+                    handle.destroyForcibly();
+                }
+                System.out.println("Backend stopped!");
+            } catch (InterruptedException e) {
+                handle.descendants().forEach(ProcessHandle::destroyForcibly);
+                handle.destroyForcibly();
+            }
         }
     }
 
@@ -183,7 +249,7 @@ public class MainApplication extends Application {
         });
     }
 
-    private void testWindows(Stage stage) throws IOException{
+    private void testWindows(Stage stage){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxmls/logSubWindow.fxml"));
         Parent root = null;
         try {
@@ -206,7 +272,8 @@ public class MainApplication extends Application {
 
     private void startEMOIFY(Stage stage) throws IOException{
         showSystemStartWindow(stage);
-        startPythonBackend();
+        //startPythonBackend();
+        startPythonBackend_setupVersion();
     }
 
     private void showWidgetWindow(Stage stage) throws IOException{
@@ -524,7 +591,7 @@ public class MainApplication extends Application {
 
     private void getRecommendationState(){
         pollingServiceRecommendationShow = new HttpPollingService(
-                "http://localhost:5000/api/getExecutedState",
+                "http://localhost:5050/api/getExecutedState",
                 Duration.ofSeconds(3)// Poll every 3 seconds
         );
 
@@ -687,6 +754,42 @@ public class MainApplication extends Application {
             }else if (selectedRecommendedApp != null){
                 mainControllerClass.setRecommendationLabels("--------", selectedRecommendedApp);
             }
+        }
+    }
+
+    private void killProcessTree(long pid) {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "taskkill /F /T /PID " + pid});
+            } else {
+                // Unix/Linux/Mac
+                Runtime.getRuntime().exec(new String[]{"sh", "-c", "pkill -9 -P " + pid});
+            }
+
+            Thread.sleep(500);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void cleanupOrphanedProcesses() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Kill any remaining python/app.exe processes
+                Runtime.getRuntime().exec("taskkill /F /IM app.exe");
+                Runtime.getRuntime().exec("taskkill /F /IM python.exe");
+            } else {
+                Runtime.getRuntime().exec("pkill -9 app");
+                Runtime.getRuntime().exec("pkill -9 python");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
